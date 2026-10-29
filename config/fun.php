@@ -203,6 +203,20 @@
 		// Карта: курьердің негізгі картасы (company_staff.map_app), әдепкісі 2GIS
 		public static $cities = ['shymkent' => 'Шымкент', 'aktobe' => 'Актобе', 'astana' => 'Астана', 'almaty' => 'Алматы', 'kostanai' => 'Костанай', 'karaganda' => 'Караганда', 'oral' => 'Уральск'];
 
+		// Яндекс картадағы қала беті (id/slug, yandex.kz-тен тексерілген); белгісіз қалада жалпы іздеу
+		public static $ya_cities = ['shymkent' => '221/chimkent', 'almaty' => '162/almaty', 'astana' => '163/astana', 'karaganda' => '164/karaganda', 'aktobe' => '20273/aktobe', 'kostanai' => '10295/kostanai', 'oral' => '10305/uralsk'];
+
+		// Қала: атауы — тізімнен, Яндекс беті — компанияның өз жолынан (company.ya_city, мыс. 221/chimkent), бос болса тізімнен
+		public static $company_ya = '';
+		public static function city($slug) {
+			$slug = (string)$slug;
+			$ya = trim(self::$company_ya, '/ ');
+			// Тек нөмір жазылса (221) — Яндекс slug-сыз 404 береді, сондықтан тізімнен «221/chimkent» деп толықтырамыз
+			if (preg_match('/^\d+$/', $ya)) { $full = ''; foreach (self::$ya_cities as $v) if (strpos($v, $ya.'/') === 0) $full = $v; $ya = $full; }
+			if ($ya !== '' && !preg_match('#^\d+/[a-z0-9-]+$#', $ya)) $ya = ''; // қате мән — елемейміз
+			return ['name' => self::$cities[$slug] ?? '', 'ya' => $ya !== '' ? $ya : (self::$ya_cities[$slug] ?? '')];
+		}
+
 		public static function map_app($staff) {
 			return (@$staff['map_app'] == 'yandex') ? 'yandex' : '2gis';
 		}
@@ -211,8 +225,10 @@
 		public static function map_url($app, $city, $address) {
 			$address = trim(str_replace('~', ' ', (string)$address));
 			if ($app == 'yandex') {
-				$c = self::$cities[$city] ?? '';
-				return 'https://yandex.kz/maps/?text='.rawurlencode(($c ? $c.', ' : '').$address);
+				$c = self::city($city)['name'];
+				// Қала беті белгілі болса, іздеу сол қаламен шектеледі: yandex.kz/maps/221/chimkent/
+				$yc = self::city($city)['ya'];
+				return 'https://yandex.kz/maps/'.($yc !== '' ? $yc.'/' : '').'?text='.rawurlencode(($c ? $c.', ' : '').$address);
 			}
 			return 'https://2gis.kz/'.rawurlencode((string)$city).'/search/'.rawurlencode($address);
 		}
@@ -220,7 +236,7 @@
 		// Бірнеше адреске маршрут (курьердің тұрған жерінен). 2GIS мәтінмен маршрут құрмайды, сондықтан әрқашан Яндекс
 		// $start — точканың адресі (company_branch.address); бос болса маршрут курьердің тұрған жерінен
 		public static function route_url($city, $addresses, $start = '', $ret = false) {
-			$c = self::$cities[$city] ?? '';
+			$c = self::city($city)['name'];
 			$pts = [];
 			foreach ($addresses as $a) {
 				$a = trim(str_replace('~', ' ', (string)$a));

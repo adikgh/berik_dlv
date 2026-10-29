@@ -13,6 +13,7 @@
 
 	$company_d = mysqli_fetch_assoc(db::query("SELECT * FROM company WHERE id = '".(int)$company."'"));
 	$city = (string)@$company_d['city'];
+	fun::$company_ya = trim((string)@$company_d['ya_city']); // Яндекс беті (company.ya_city)
 	$branch_d = $order['branch_id'] ? fun::branch($order['branch_id']) : [];
 	$status_d = mysqli_fetch_assoc(db::query("SELECT * FROM retail_orders_status WHERE id = '".(int)$order['order_status']."'"));
 

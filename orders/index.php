@@ -8,6 +8,7 @@
 	$company_d = mysqli_fetch_assoc(db::query("SELECT * FROM company WHERE `id` = '$company'"));
 
 	$city = $company_d['city'];
+	fun::$company_ya = trim((string)@$company_d['ya_city']); // Яндекс беті (company.ya_city)
 
    	$type = @$_GET['type'];
    	$sort = 'new'; 
@@ -198,7 +199,7 @@
 					<? if (!empty($take_ids)): ?>
 						<div class="btn on_take_all" data-ids="<?=implode(',', $take_ids)?>"><i class="far fa-check-double"></i><span>Барлығын қабылдау</span><b class="tab_cnt"><?=count($take_ids)?></b></div>
 					<? else: ?>
-						<a class="btn on_route" href="<?=e($map_app == '2gis' ? '/orders/route.php?ids='.implode(',', $route_ids) : fun::route_url($city, $route_addr, (string)@$route_start, fun::route_return($user_right)))?>" target="_blank"><i class="far fa-route"></i><span>Маршрут құру</span><b class="tab_cnt"><?=count($route_addr)?></b></a>
+						<a class="btn on_route" href="<?=e('/orders/route.php?ids='.implode(',', $route_ids))?>" target="_blank"><i class="far fa-route"></i><span>Маршрут құру</span><b class="tab_cnt"><?=count($route_addr)?></b></a>
 					<? endif ?>
 				</div>
 			<? endif ?>

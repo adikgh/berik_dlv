@@ -1,11 +1,12 @@
 <? include "../config/core.php";
 
 	// «Маршрут құру» 2GIS арқылы: адрестерді 2GIS Geocoder-мен координатқа айналдырып,
-	// 2GIS маршрутын ашады. Бірінші нүкте — точканың адресі (company_branch.address), бос болса курьердің тұрған жері. Базаға сақталмайды.
+	// 2GIS немесе Яндекс маршрутын ашады (екеуі де координатпен). Бірінші нүкте — точканың адресі (company_branch.address), бос болса курьердің тұрған жері. Базаға сақталмайды.
 	if (!$user_id) { header('location: /'); exit; }
 
-	$company_d = mysqli_fetch_assoc(db::query("SELECT city FROM company WHERE id = '".(int)$company."'"));
+	$company_d = mysqli_fetch_assoc(db::query("SELECT * FROM company WHERE id = '".(int)$company."'"));
 	$city = (string)@$company_d['city'];
+	fun::$company_ya = trim((string)@$company_d['ya_city']);
 
 	// Тек курьердің өз тапсырыстары, экрандағы ретпен
 	$ids = array_values(array_unique(array_filter(array_map('intval', explode(',', (string)@$_GET['ids'])))));
@@ -40,20 +41,32 @@
 	}
 
 	$key = is_file(__DIR__.'/../config/map_key.php') ? (string)(include __DIR__.'/../config/map_key.php') : '';
-	$city_name = fun::$cities[$city] ?? '';
-	$pts = [];
-	$from = ''; // бос — курьердің тұрған жері
-	if ($key !== '') {
-		if ($start !== '') { $g = geo2gis(($city_name ? $city_name.', ' : '').$start, $key); if ($g) $from = $g[0].','.$g[1].($g[2] !== '' ? ';'.$g[2] : ''); }
-		foreach ($addrs as $a) {
-			$g = geo2gis(($city_name ? $city_name.', ' : '').$a, $key);
-			if ($g) $pts[] = $g[0].','.$g[1].($g[2] !== '' ? ';'.$g[2] : '');
-		}
+	$city_name = fun::city($city)['name'];
+	$ret = fun::route_return($user_right); // соңында базаға қайту (аккаунттағы баптау)
+	$app = fun::map_app($user_right);      // 2gis / yandex
+	$cp = $city_name ? $city_name.', ' : '';
+
+	// Әр нүктенің координаты (табылмаса null)
+	$g_from = ($key !== '' && $start !== '') ? geo2gis($cp.$start, $key) : null;
+	$g_pts = [];
+	foreach ($addrs as $a) $g_pts[] = $key !== '' ? geo2gis($cp.$a, $key) : null;
+	$found = count(array_filter($g_pts));
+
+	// Яндекс: координатпен (lat,lon) — дәл түседі; координат табылмаған нүкте мәтінмен қалады
+	if ($app == 'yandex' || !$found) {
+		$y = function ($g, $txt) use ($cp) { return $g ? $g[1].','.$g[0] : $cp.trim(str_replace('~', ' ', $txt)); };
+		$parts = [$start !== '' ? $y($g_from, $start) : ''];
+		foreach ($addrs as $i => $a) $parts[] = $y($g_pts[$i], $a);
+		if ($ret && $start !== '') $parts[] = $y($g_from, $start);
+		header('location: https://yandex.kz/maps/?rtext='.rawurlencode(implode('~', $parts)).'&rtt=auto');
+		exit;
 	}
 
-	// Бірде-бір адрес табылмаса — бұрынғыдай Яндекспен
-	$ret = fun::route_return($user_right); // соңында базаға қайту (аккаунттағы баптау)
-	if (!$pts) { header('location: '.fun::route_url($city, $addrs, $start, $ret)); exit; }
+	// 2GIS: lon,lat;id
+	$z = function ($g) { return $g[0].','.$g[1].($g[2] !== '' ? ';'.$g[2] : ''); };
+	$from = $g_from ? $z($g_from) : ''; // бос — курьердің тұрған жері
+	$pts = [];
+	foreach ($g_pts as $g) if ($g) $pts[] = $z($g);
 	if ($ret && $from !== '') $pts[] = $from;
 
 	header('location: https://2gis.kz/'.rawurlencode($city).'/directions/points/'.rawurlencode($from.'|'.implode('|', $pts)));
