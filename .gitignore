@@ -1,0 +1,9 @@
+/config/db.php
+/assets/pl/fontawesome
+/assets/pl/fontawesome/
+/config/map_key.php
+/config/secret.php
+/config/smsc_api.php
+/assets/uploads/users/*
+!/assets/uploads/users/Sample_User_Icon.png
+*.sql
