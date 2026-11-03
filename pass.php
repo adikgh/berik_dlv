@@ -1,6 +1,7 @@
 <? include "config/core.php";
 
-	if ($user['password'] != '123456') header('location: /orders/');
+	if (!$user_id) { header('location: /'); exit; }
+	if (!pass_ok('123456', $user['password'])) { header('location: /orders/'); exit; }
 
 	// site setting
 	$menu_name = 'sign';

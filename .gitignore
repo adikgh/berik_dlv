@@ -7,3 +7,11 @@
 /assets/uploads/users/*
 !/assets/uploads/users/Sample_User_Icon.png
 *.sql
+/config/auth_key.php
+/config/wa_conf.php
+/config/ai.php
+/config/gdrive_token.php
+/config/client_link.php
+*.bak_*
+/assets/uploads/*
+!/assets/uploads/users/
