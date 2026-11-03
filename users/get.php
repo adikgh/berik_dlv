@@ -10,14 +10,14 @@
 		// user барлық адамға ортақ: клиент ретінде бар болса, сол жазбаны қолданамыз
 		$user_d = mysqli_fetch_assoc(db::query("SELECT * FROM `user` WHERE phone = '$phone' limit 1"));
 		if (!$user_d) {
-			db::query("INSERT INTO `user`(`name`, `phone`, `password`, `right`) VALUES ('$name', '$phone', '123456', 1)");
+			db::query("INSERT INTO `user`(`name`, `phone`, `password`, `right`) VALUES ('$name', '$phone', '".pass_sql('123456')."', 1)");
 			$user_d = mysqli_fetch_assoc(db::query("SELECT * FROM `user` WHERE phone = '$phone' limit 1"));
 		}
 		if (!$user_d) exit();
 		$user_id = (int)$user_d['id'];
 		$company_id = (int)$company;
 		if (mysqli_num_rows(db::query("SELECT id FROM `company_staff` WHERE user_id = '$user_id' and company_id = '$company_id'"))) { echo 'yes'; exit(); }
-		if (!$user_d['right'] || !$user_d['password']) db::query("UPDATE `user` SET `right` = 1, `password` = IFNULL(`password`, '123456') WHERE id = '$user_id'");
+		if (!$user_d['right'] || !$user_d['password']) db::query("UPDATE `user` SET `right` = 1, `password` = IFNULL(`password`, '".pass_sql('123456')."') WHERE id = '$user_id'");
 		db::query("INSERT INTO `company_staff`(`user_id`, `positions_id`, `company_id`) VALUES ('$user_id', 6, '$company_id')");
 		echo 'add';
 
@@ -104,14 +104,16 @@
 
 		// add user
 	if(isset($_GET['pass_ubd'])) {
-		$id = @strip_tags($_POST['id']);
-		$pass = @strip_tags($_POST['pass']);
+		$id = (int)@$_POST['id'];
+		$pass = trim((string)@$_POST['pass']);
+		if (!$user_id) exit('none');
+		// Өзгенің паролін тек басшы/раздача, өз компаниясының жұмысшысына ғана өзгерте алады
+		if ($id != $user_id && (!in_array((int)@$user_right['positions_id'], [1, 2, 3]) || !mysqli_num_rows(db::query("SELECT id FROM company_staff WHERE user_id = '$id' and company_id = '".(int)$company."'")))) exit('none');
 
-		if ($pass) {
-			$upd = db::query("UPDATE `user` SET `password` = '$pass' WHERE id = '$id'");
+		if (mb_strlen($pass) >= 4) {
+			$upd = db::query("UPDATE `user` SET `password` = '".pass_sql($pass)."' WHERE id = '$id'");
 			if ($upd) {
-				$_SESSION['ups'] = $pass;
-				setcookie('ups', $pass, time() + 3600*24*30*6, '/');
+				if ($id == $user_id) auth_relogin($user_id);
 				echo 'yes';
 			}
 		}
