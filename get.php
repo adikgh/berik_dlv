@@ -1,7 +1,7 @@
 <? include "config/core.php";
 
 	// Кіру: пароль → WhatsApp коды, парольді ұмыттым (config/auth.php)
-	auth_routes([6], 'delivery');
+	auth_routes($site_pos, $dist ? 'dist' : 'delivery'); // config/core.php: Раздача [1,2,3,8], Доставка [6]
 
 
 	// ubd user

@@ -11,6 +11,7 @@
 	$site_set['footer'] = false;
 	$css = ['main'];
 	$js = ['main', 'sign'];
+	$asset_shared = true; // кіру беті Раздачада да курьердікімен бірдей (ортақ css/js)
 ?>
 <? include "block/header.php"; ?>
 
@@ -19,7 +20,7 @@
 			<div class="usign_c">
 
 				<div class="bp_brand" style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:18px"><img src="/assets/img/logo/berik-icon.svg" alt="BERIK POS" width="64" height="64" style="display:block;width:64px;height:64px"><span style="font-family:'Nunito',sans-serif;font-style:italic;font-weight:900;font-size:24px;letter-spacing:.3px;line-height:1">BERIK <b style="color:#0EA768;font-weight:800">POS</b></span></div>
-				<div class="usign_head"><h3 class="usign_h">Доставка</h3></div>
+				<div class="usign_head"><h3 class="usign_h"><?=$dist ? 'Раздача' : 'Доставка'?></h3></div>
 				<? include "block/sign_form.php"; ?>
 
 			</div>
