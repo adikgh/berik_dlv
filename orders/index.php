@@ -1,4 +1,5 @@
 <? include "../config/core.php";
+	if ($dist) { require __DIR__.'/dist.php'; exit; } // Раздача тапсырыстары
 
 	// 
 	if (!$user_id) { header('location: /'); exit; }

@@ -1,9 +1,0 @@
-AddDefaultCharset utf-8
-ErrorDocument 404 /
-
-# Өз rewrite баптауы бар: ата-папканың (dlv) ережелері мұнда қолданылмайды.
-# dlv хосты арқылы /dist/... ашса → 404. Хост атауына байланбайды (live: dstb.gprog.kz).
-RewriteEngine On
-# THE_REQUEST — браузер сұраған бастапқы жол (ішкі rewrite-тан кейін де өзгермейді)
-RewriteCond %{THE_REQUEST} \s/dist(/|\?|\s) [NC]
-RewriteRule ^ - [R=404,L]

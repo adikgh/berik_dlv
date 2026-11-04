@@ -1,4 +1,5 @@
-<? include "../config/core.php"; ?>
+<? include "../config/core.php";
+	if (!$dist || !$user_id) exit; // тек кірген Раздача/басшылық ?>
 
    <!--  -->
    <? if (isset($_GET['user_edit'])): ?>

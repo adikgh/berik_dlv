@@ -1,4 +1,5 @@
-<? include "../config/core.php";
+<? // Раздача аккаунты. acc/index.php-ден шақырылады ($dist). Тікелей ашылса — аккаунтқа.
+	if (empty($dist)) { header('location: /acc/'); exit; }
 
 	// Қолданушыны тексеру
 	if (!$user_id) { header('location: /'); exit(); }

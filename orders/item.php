@@ -1,4 +1,5 @@
 <? include "../config/core.php";
+	if ($dist) { $item_id = (int)@$_GET['id']; require __DIR__.'/dist.php'; exit; } // Раздача: бір тапсырыс
 
 	// Тапсырыстың ішкі беті (курьер тек өз тапсырысын көреді)
 	if (!$user_id) { header('location: /'); exit; }

@@ -1,4 +1,5 @@
-<? include "../config/core.php";
+<? // Раздача әрекеттері. orders/get.php-ден шақырылады ($dist).
+	if (empty($dist)) exit('none');
 
 	// Тек кірген қызметкер (core.php тек 1,2,3,8 лауазымын қалдырады)
 	if (!$user_id) exit('none');

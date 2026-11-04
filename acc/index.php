@@ -1,7 +1,8 @@
 <? include "../config/core.php";
+	if ($dist) { require __DIR__.'/dist.php'; exit; } // Раздача аккаунты
 
 	// Қолданушыны тексеру
-	if (!$user_id) header('location: /');
+	if (!$user_id) { header('location: /'); exit; }
 
 	// Сайттың баптаулары
 	$menu_name = 'acc';

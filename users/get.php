@@ -1,7 +1,7 @@
 <? include "../config/core.php";
 
-	// Тек кірген қызметкер (core.php тек 1,2,3,8 лауазымын қалдырады)
-	if (!$user_id) exit('none');
+	// Тек кірген қызметкер (core.php тек 1,2,3,8 лауазымын қалдырады), тек Раздача хостында
+	if (!$dist || !$user_id) exit('none');
 
 	// add user
 	if(isset($_GET['add_user'])) {

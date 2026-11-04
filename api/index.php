@@ -23,6 +23,7 @@ unset($_GET['lang'], $_GET['company']);
 ob_start();
 include __DIR__.'/../config/core.php';
 ob_end_clean();
+if (!$dist) { http_response_code(404); echo json_encode(['ok' => false, 'error' => 'not_found']); exit; } // API тек Раздача хостында
 require_once __DIR__.'/../orders/hist.php';
 
 const API_TTL = 3600 * 24 * 180; // токен 6 ай жарамды (сайттағы cookie сияқты)

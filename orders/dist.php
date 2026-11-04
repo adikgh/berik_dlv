@@ -1,4 +1,5 @@
-<? include "../config/core.php";
+<? // Раздача тапсырыстары. orders/index.php мен orders/item.php-ден шақырылады ($dist). Тікелей ашылса — тізімге.
+	if (empty($dist)) { header('location: /orders/'); exit; }
 
 	// 
 	if (!$user_id) { header('location: /'); exit; }

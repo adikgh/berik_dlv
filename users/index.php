@@ -1,4 +1,5 @@
 <? include "../config/core.php";
+	if (!$dist) { http_response_code(404); exit; } // қызметкерлер тек Раздачада
 	
 	// Қолданушыны тексеру
 	if (!$user_id) { header('location: /'); exit; }
