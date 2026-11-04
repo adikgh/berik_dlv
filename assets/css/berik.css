@@ -392,3 +392,13 @@ body.acc_drw_lock{ overflow: hidden; }
 .hil_headc2s p{ white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: clamp(16px, 5.4vw, 22px); }
 .ord_page{ padding-bottom: 120px !important; }
 .hil_headc2s p.hil_red{ color: var(--bp-red); }
+
+/* ---------- Кіру беті (Доставка мен Раздачаға ортақ) ---------- */
+/* Телефонда: экран шетінен 16px, карточка ішінде 20px, бұрыштары дөңгелек */
+.u_sign .bl_c{ padding-left: 16px !important; padding-right: 16px !important; } /* басқа беттерде 10px (жоғарыда), кіру бетінде 16px */
+.usign_c{ background: var(--bp-card); border-radius: 20px; box-shadow: var(--bp-shadow); }
+@media (max-width: 500px){
+	.usign_c{ padding: 28px 20px 20px; border-radius: 20px; }
+}
+.usign_c .sg_go{ background: var(--bp-green); color: #fff; }
+.usign_c .sg_go:hover{ background: var(--bp-green-h); }
