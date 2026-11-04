@@ -60,8 +60,10 @@
    $user_id = @$user['id'];
    $user_right = fun::user_staffw($user_id);
 
-   // Доставка сайтына тек курьер (6) кіреді. Басқа лауазымның cookie-сі мұнда жарамайды.
-   if ($user_id && (!$user_right || (int)$user_right['positions_id'] !== 6)) {
+   // Раздача хостына тек 1,2,3 (басшылық) және 8 (Раздача), Доставка хостына тек 6 (курьер) кіреді.
+   // Басқа лауазымның cookie-сі жарамайды.
+   $site_pos = $dist ? [1, 2, 3, 8] : [6];
+   if ($user_id && (!$user_right || !in_array((int)$user_right['positions_id'], $site_pos, true))) {
       $core->user_unset();
       $user = []; $user_id = null; $user_right = 0;
    }
@@ -69,8 +71,8 @@
 
 
    // setting
-   $site = mysqli_fetch_array(db::query("select * from `site` where id = 4"));
-   $ver = 3.003;
+   $site = mysqli_fetch_array(db::query("select * from `site` where id = '".($dist ? 1 : 4)."'"));
+   $ver = 3.004;
 
    // 
    $site_set = [
@@ -90,9 +92,19 @@
 
 
    // lang
+   // Тіл: kz (стандарт), en, uz, ky, ru. ?lang= басылса cookie-ге жазылып, сол бетке параметрсіз оралады
+   $langs_short = ['kz' => 'ҚАЗ', 'en' => 'ENG', 'uz' => 'UZB', 'ky' => 'KGZ', 'ru' => 'РУС']; // кассадағыдай
+   if (isset($_GET['lang']) && isset($langs_short[$_GET['lang']])) {
+      $_SESSION['lang'] = $_GET['lang'];
+      setcookie('lang', $_GET['lang'], time() + 3600 * 24 * 365, '/');
+      $q = $_GET; unset($q['lang']);
+      header('location: '.strtok($_SERVER['REQUEST_URI'], '?').($q ? '?'.http_build_query($q) : ''));
+      exit();
+   }
    $lang = 'kz';
-   if (isset($_GET['lang'])) if ($_GET['lang'] == 'kz' || $_GET['lang'] == 'ru') $_SESSION['lang'] = $_GET['lang'];
-   if (isset($_SESSION['lang'])) $lang = $_SESSION['lang'];
+   if (isset($_COOKIE['lang']) && isset($langs_short[$_COOKIE['lang']])) $lang = $_COOKIE['lang'];
+   elseif (isset($_SESSION['lang']) && isset($langs_short[$_SESSION['lang']])) $lang = $_SESSION['lang'];
+   t::$lang = $lang;
 
    // company
    $company = 1; 
@@ -106,6 +118,7 @@
       }
       if (isset($_SESSION['company'])) $company = $_SESSION['company'];
    }
+   $company_d = mysqli_fetch_array(db::query("select * from `company` where id = '$company'"));
 
    // branch
    $branch = 0; if (@$user_right['branch_id']) $branch = $user_right['branch_id'];

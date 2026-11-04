@@ -73,6 +73,21 @@
 
 
 		// user
+		// Asset сілтемесі + ?v=файл уақыты. Раздачада assets/dist/ ішінде өз нұсқасы болса, сол беріледі.
+		// $asset_shared = true болса (кіру беті) екі сайтқа да ортақ нұсқа.
+		public static function asset($p) {
+			global $dist, $asset_shared;
+			$root = __DIR__.'/../assets/';
+			if ($dist && empty($asset_shared) && is_file($root.'dist/'.$p)) $p = 'dist/'.$p;
+			return '/assets/'.$p.'?v='.@filemtime($root.$p);
+		}
+
+		// company
+		public static function company($id) {
+			$sql = db::query("select * from company where id = '$id'");
+			return mysqli_fetch_array($sql);
+		}
+
 		public static function user($id) {
 			$sql = db::query("select * from user where id = '$id'");
 			if (mysqli_num_rows($sql)) return mysqli_fetch_array($sql); else return 0;
