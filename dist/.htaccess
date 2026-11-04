@@ -1,7 +1,8 @@
 AddDefaultCharset utf-8
 ErrorDocument 404 /
 
-# dist/ тек dist.* хостында ашылады; dlv.berik.c/dist/ → 404
+# Өз rewrite баптауы бар: ата-папканың (dlv) ережелері мұнда қолданылмайды.
+# dlv хосты арқылы /dist/... ашса → 404. Хост атауына байланбайды (live: dstb.gprog.kz).
 RewriteEngine On
-RewriteCond %{HTTP_HOST} !^dist\. [NC]
+RewriteCond %{REQUEST_URI} ^/dist(/|$) [NC]
 RewriteRule ^ - [R=404,L]
