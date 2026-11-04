@@ -1,5 +1,8 @@
 <? include "../config/core.php";
 
+	// Ескі админ беті (филиалдың барлық тапсырысы). Курьерге жабық — тек өз тапсырыстары /orders/-та
+	header('location: /orders/'); exit;
+
 	// 
 	if (!$user_id) header('location: /');
 

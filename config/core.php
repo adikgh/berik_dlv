@@ -60,6 +60,12 @@
    $user_id = @$user['id'];
    $user_right = fun::user_staffw($user_id);
 
+   // Доставка сайтына тек курьер (6) кіреді. Басқа лауазымның cookie-сі мұнда жарамайды.
+   if ($user_id && (!$user_right || (int)$user_right['positions_id'] !== 6)) {
+      $core->user_unset();
+      $user = []; $user_id = null; $user_right = 0;
+   }
+
 
 
    // setting

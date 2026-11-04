@@ -1,4 +1,9 @@
 <? include "../config/core.php";
+
+   // Тек курьер (6). Әр әрекет тапсырыстың сол курьерге тиесілі екенін тексереді (сourier_id = $user_id)
+   if (!$user_id || (int)@$user_right['positions_id'] !== 6) exit('none');
+   // Админнен қалған әрекеттер курьерге жабық (қайтару, курьер ауыстыру, өшіру, статус, касса)
+   if (array_intersect(['return_sn', 'change_staff', 'delete', 'change_status', 'cashbox_pay'], array_keys($_GET))) exit('none');
    
    // returns
 	if(isset($_GET['return_sn'])) {

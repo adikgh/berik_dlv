@@ -1,8 +1,8 @@
 <? include "../config/core.php";
 
 	// 
-	if (!$user_id) header('location: /');
-	if ($user['password'] == '123456') header('location: /pass.php');
+	if (!$user_id) { header('location: /'); exit; }
+	if ($user['password'] == '123456') { header('location: /pass.php'); exit; }
 
 
 	$company_d = mysqli_fetch_assoc(db::query("SELECT * FROM company WHERE `id` = '$company'"));

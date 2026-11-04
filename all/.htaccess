@@ -1,0 +1,4 @@
+# Ескі код (сілтемесі жоқ, тексерусіз endpoint-тер). PHP файлдары жабық.
+<FilesMatch "\.php$">
+	Require all denied
+</FilesMatch>
