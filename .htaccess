@@ -1,2 +1,8 @@
 AddDefaultCharset utf-8
 ErrorDocument 404 /
+
+# Раздача (dist) осы папканың ішінде: dist/
+# Егер dist.berik.c домені осы папкаға бағытталса — сұранысты dist/ ішіне жібереміз
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^dist\. [NC]
+RewriteRule ^(?!dist/)(.*)$ dist/$1 [END]

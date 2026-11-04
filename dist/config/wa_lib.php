@@ -7,7 +7,7 @@
 if (!function_exists('wa_conf')) {
 
 function wa_conf_path() {
-	$main = __DIR__ . '/../../adm.berik.c/config/wa_conf.php';
+	$main = __DIR__ . '/../../../adm.berik.c/config/wa_conf.php';
 	return is_file($main) ? $main : __DIR__ . '/wa_conf.php';
 }
 

@@ -15,3 +15,23 @@
 *.bak_*
 /assets/uploads/*
 !/assets/uploads/users/
+
+# dist (Раздача) — dist.berik.c домені
+/dist/config/db.php
+/dist/config/secret.php
+/dist/config/smsc_api.php
+/dist/config/map_key.php
+/dist/assets/pl/fontawesome/
+/dist/assets/uploads/users/*
+!/dist/assets/uploads/users/Sample_User_Icon.png
+/dist/**/*.sql
+/dist/**/*.bak*
+/dist/**/*.log
+/dist/config/auth_key.php
+/dist/config/wa_conf.php
+/dist/config/ai.php
+/dist/config/gdrive_token.php
+/dist/config/client_link.php
+/dist/**/*.bak_*
+/dist/assets/uploads/*
+!/dist/assets/uploads/users/

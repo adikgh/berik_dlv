@@ -1,2 +1,7 @@
 AddDefaultCharset utf-8
 ErrorDocument 404 /
+
+# dist/ тек dist.* хостында ашылады; dlv.berik.c/dist/ → 404
+RewriteEngine On
+RewriteCond %{HTTP_HOST} !^dist\. [NC]
+RewriteRule ^ - [R=404,L]
