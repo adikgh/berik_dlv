@@ -2,7 +2,8 @@ AddDefaultCharset utf-8
 ErrorDocument 404 /
 
 # Раздача (dist) осы папканың ішінде: dist/
-# Егер dist.berik.c домені осы папкаға бағытталса — сұранысты dist/ ішіне жібереміз
+# Раздача домені (жергілікті dist.berik.c, live dstb.gprog.kz) осы папкаға бағытталса — сұранысты dist/ ішіне жібереміз.
+# Домен тікелей dist/ папкасына бағытталса да жұмыс істейді.
 RewriteEngine On
-RewriteCond %{HTTP_HOST} ^dist\. [NC]
+RewriteCond %{HTTP_HOST} ^(dist|dstb)\. [NC]
 RewriteRule ^(?!dist/)(.*)$ dist/$1 [END]
