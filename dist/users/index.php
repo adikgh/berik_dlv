@@ -1,7 +1,7 @@
 <? include "../config/core.php";
 	
 	// Қолданушыны тексеру
-	if (!$user_id) header('location: /');
+	if (!$user_id) { header('location: /'); exit; }
 
 
 	$number = '';

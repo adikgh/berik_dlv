@@ -1,5 +1,8 @@
 <? include "../config/core.php";
 
+	// Тек кірген қызметкер (core.php тек 1,2,3,8 лауазымын қалдырады)
+	if (!$user_id) exit('none');
+
 	// add user
 	if(isset($_GET['add_user'])) {
 		$name = mysqli_real_escape_string(db::$connect, trim(strip_tags((string)@$_POST['name'])));

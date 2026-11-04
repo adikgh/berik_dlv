@@ -49,7 +49,7 @@ function api_key() {
 function api_sign($uid, $exp, $pass) { return hash_hmac('sha256', $uid.'|'.$exp.'|'.$pass, api_key()); }
 function api_token($u) { $exp = time() + API_TTL; return $u['id'].'.'.$exp.'.'.api_sign($u['id'], $exp, $u['password']); }
 
-// Раздачаға кіре алатын лауазымдар: 1 Директор, 2 Админ, 3 Раздача
+// Раздачаға кіре алатын лауазымдар: 1 Создатель, 2 Директор, 3 Басқарушы, 8 Раздача
 function api_staff_ok($uid) {
 	$s = fun::user_staffw($uid);
 	return ($s && in_array((int)$s['positions_id'], [1, 2, 3, 8])) ? $s : null;

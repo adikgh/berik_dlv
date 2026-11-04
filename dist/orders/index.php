@@ -1,10 +1,10 @@
 <? include "../config/core.php";
 
 	// 
-	if (!$user_id) header('location: /');
+	if (!$user_id) { header('location: /'); exit; }
 	if (@$user_staff['positions_id'] == 6) {
 		$core->user_unset();
-		header('location: /');
+		header('location: /'); exit;
 	}
 
 
