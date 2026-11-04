@@ -18,7 +18,7 @@
 
 
 	// Кіру: пароль → WhatsApp коды, парольді ұмыттым (config/auth.php)
-	auth_routes([1, 2, 3], 'dist');
+	auth_routes([1, 2, 3, 8], 'dist');
 
 
 

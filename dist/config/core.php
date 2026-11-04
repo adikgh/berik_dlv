@@ -60,6 +60,12 @@
    $user_id = @$user['id'];
    $user_right = fun::user_staffw($user_id);
 
+   // Раздача сайтына тек 1,2,3 (басшылық) және 8 (Раздача) кіреді. Курьер cookie-сі мұнда жарамайды.
+   if ($user_id && (!$user_right || !in_array((int)$user_right['positions_id'], [1, 2, 3, 8], true))) {
+      $core->user_unset();
+      $user = []; $user_id = null; $user_right = 0;
+   }
+
 
 
    // setting

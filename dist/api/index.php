@@ -52,7 +52,7 @@ function api_token($u) { $exp = time() + API_TTL; return $u['id'].'.'.$exp.'.'.a
 // Раздачаға кіре алатын лауазымдар: 1 Директор, 2 Админ, 3 Раздача
 function api_staff_ok($uid) {
 	$s = fun::user_staffw($uid);
-	return ($s && in_array((int)$s['positions_id'], [1, 2, 3])) ? $s : null;
+	return ($s && in_array((int)$s['positions_id'], [1, 2, 3, 8])) ? $s : null;
 }
 
 // ---------- кіру ----------
@@ -229,7 +229,7 @@ switch ($a) {
 
 	// Профиль, компания және қосулы бөлімдер
 	case 'me':
-		$pos = [1 => t::w('Директор', 'Директор'), 2 => t::w('Админ', 'Админ'), 3 => t::w('Раздача', 'Раздача')];
+		$pos = [1 => t::w('Создатель', 'Создатель'), 2 => t::w('Директор', 'Директор'), 3 => t::w('Басқарушы', 'Управляющий'), 8 => t::w('Раздача', 'Раздача')];
 		$types = [];
 		$tq = db::query("select nms from retail_orders_type order by number asc");
 		while ($t = mysqli_fetch_assoc($tq)) if (in_array($t['nms'], ['delivery', 'yourself', 'service', 'coffee']) && !empty($company_d[$t['nms']])) $types[] = $t['nms'];
