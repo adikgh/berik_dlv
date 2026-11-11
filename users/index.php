@@ -84,7 +84,7 @@
 					</div>
 					<div class="form_im ">
 						<div class="form_span"><?=t::w('Телефон нөмірі', 'Номер телефона')?>:</div>
-						<input type="tel" class="form_txt phone fr_phone" placeholder="8 (000) 000-00-00" data-lenght="11">
+						<input type="tel" class="form_txt phone fr_phone" placeholder="8 (700) 000-00-00" data-lenght="11">
 						<i class="fal fa-mobile form_icon"></i>
 					</div>
 					<div class="form_im form_im_bn">
