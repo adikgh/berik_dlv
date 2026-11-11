@@ -133,6 +133,8 @@ function order_json($o, $full = false) {
 		'can_table' => in_array($st, [1, 8, 2]) && $ot == 4,
 		'items' => $items,
 		'delivery' => (int)$o['pay_delivery'],
+		'promo_name' => (int)@$o['promo_discount'] > 0 ? trim((string)$o['promo_name']).' −'.rtrim(rtrim(number_format((float)$o['promo_percent'], 2, '.', ''), '0'), '.').'%' : '',
+		'promo_discount' => (int)@$o['promo_discount'],
 		'total' => (int)$o['total'],
 		'prepay' => $pre,
 		'prepay_method' => (string)(@$pm[$o['prepay_method']] ?: ''),
