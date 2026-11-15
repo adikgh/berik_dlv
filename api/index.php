@@ -89,7 +89,7 @@ if (@$company_d['ins_dt'] != null && @$company_d['end_dt'] != null) {
 }
 
 function st_names() {
-	return [1 => t::w('Жаңа', 'Новый'), 8 => t::w('Дайындалуда', 'Готовится'), 2 => t::w('Дайын', 'Готов'), 11 => t::w('Курьер тағайындалды', 'Курьер назначен'), 3 => t::w('Жолда', 'В пути'), 9 => t::w('Столда', 'На столе'), 4 => t::w('Аяқталды', 'Завершён'), 5 => t::w('Бас тарту', 'Отказ'), 6 => t::w('Алғанда бас тарту', 'Отказ при получении'), 10 => t::w('Сыртта бас тарту', 'Отказ вне')];
+	return [1 => t::st(1), 8 => t::st(8), 2 => t::st(2), 11 => t::st(11), 3 => t::st(3), 9 => t::st(9), 4 => t::st(4), 5 => t::st(5), 6 => t::st(6), 10 => t::st(10)];
 }
 function st_colors() {
 	static $c = null;
@@ -97,9 +97,9 @@ function st_colors() {
 	return $c;
 }
 function pm_names() {
-	return ['transfer' => t::w('Аударым', 'Перевод'), 'qr' => 'Kaspi QR', 'cash' => t::w('Қолма-қол', 'Наличные'), 'red' => 'Red', 'mix' => t::w('Аралас', 'Смешанная'), 'mixed' => t::w('Аралас', 'Смешанная'), 'unpaid' => t::w('Төленбеген', 'Не оплачен')];
+	return ['transfer' => t::w('Transfer', 'Аударым'), 'qr' => 'Kaspi QR', 'cash' => t::w('Cash', 'Қолма-қол'), 'red' => 'Red', 'mix' => t::w('Mixed', 'Аралас'), 'mixed' => t::w('Mixed', 'Аралас'), 'unpaid' => t::w('Unpaid', 'Төленбеген')];
 }
-function type_names() { return [1 => t::w('Жеткізу', 'Доставка'), 2 => t::w('Өзімен', 'Собой'), 3 => t::w('Сервис', 'Сервис'), 4 => t::w('Кафе', 'Кафе')]; }
+function type_names() { return [1 => t::w('Delivery', 'Жеткізу'), 2 => t::w('Pickup', 'Өзімен'), 3 => t::w('Service', 'Сервис'), 4 => t::w('Cafe', 'Кафе')]; }
 function user_name($id) { static $c = []; $id = (int)$id; if (!$id) return ''; if (!isset($c[$id])) { $u = fun::user($id); $c[$id] = $u ? trim((string)$u['name']) : ''; } return $c[$id]; }
 function branch_row($id) { static $c = []; $id = (int)$id; if (!$id) return null; if (!array_key_exists($id, $c)) { $b = fun::branch($id); $c[$id] = $b ?: null; } return $c[$id]; }
 
@@ -232,7 +232,7 @@ switch ($a) {
 
 	// Профиль, компания және қосулы бөлімдер
 	case 'me':
-		$pos = [1 => t::w('Создатель', 'Создатель'), 2 => t::w('Директор', 'Директор'), 3 => t::w('Басқарушы', 'Управляющий'), 8 => t::w('Раздача', 'Раздача')];
+		$pos = [1 => t::w('Creator', 'Создатель'), 2 => t::w('Director', 'Директор'), 3 => t::w('Manager', 'Басқарушы'), 8 => t::w('Dispatch', 'Раздача')];
 		$types = [];
 		$tq = db::query("select nms from retail_orders_type order by number asc");
 		while ($t = mysqli_fetch_assoc($tq)) if (in_array($t['nms'], ['delivery', 'yourself', 'service', 'coffee']) && !empty($company_d[$t['nms']])) $types[] = $t['nms'];

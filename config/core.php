@@ -101,10 +101,12 @@
       header('location: '.strtok($_SERVER['REQUEST_URI'], '?').($q ? '?'.http_build_query($q) : ''));
       exit();
    }
-   $lang = 'kz';
-   if (isset($_COOKIE['lang']) && isset($langs_short[$_COOKIE['lang']])) $lang = $_COOKIE['lang'];
-   elseif (isset($_SESSION['lang']) && isset($langs_short[$_SESSION['lang']])) $lang = $_SESSION['lang'];
-   t::$lang = $lang;
+   // $ui_lang — интерфейс тілі (сөздер site_word-тан, config/t.php), $lang — деректер тілі (name_kz / name_ru), кассадағыдай
+   $ui_lang = 'kz';
+   if (isset($_COOKIE['lang']) && isset($langs_short[$_COOKIE['lang']])) $ui_lang = $_COOKIE['lang'];
+   elseif (isset($_SESSION['lang']) && isset($langs_short[$_SESSION['lang']])) $ui_lang = $_SESSION['lang'];
+   t::$lang = $ui_lang;
+   $lang = ($ui_lang == 'ru') ? 'ru' : 'kz';
 
    // company
    $company = 1; 

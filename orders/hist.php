@@ -5,7 +5,7 @@ function dist_hist_html($o) {
 	$last = [];
 	$lg = db::query("select new_value sid, max(ins_dt) dt from retail_orders_log where order_id = '$oid' and field = 'status' group by new_value");
 	while ($l = mysqli_fetch_assoc($lg)) $last[(int)$l['sid']] = $l['dt'];
-	$nm_kz = [1 => t::w('Жаңа', 'Новый'), 8 => t::w('Дайындалуда', 'Готовится'), 2 => t::w('Дайын', 'Готов'), 11 => t::w('Курьер тағайындалды', 'Курьер назначен'), 3 => t::w('Жолда', 'В пути'), 9 => t::w('Столда', 'На столе'), 4 => t::w('Аяқталды', 'Завершён'), 5 => t::w('Бас тарту', 'Отказ'), 6 => t::w('Алғанда бас тарту', 'Отказ при получении'), 10 => t::w('Сыртта бас тарту', 'Отказ вне')];
+	$nm_kz = [1 => t::st(1), 8 => t::st(8), 2 => t::st(2), 11 => t::st(11), 3 => t::st(3), 9 => t::st(9), 4 => t::st(4), 5 => t::st(5), 6 => t::st(6), 10 => t::st(10)];
 	$cur = (int)$o['order_status'];
 	$rows = []; $first = true;
 	$sts = db::query("select * from retail_orders_status order by number asc");
@@ -25,7 +25,7 @@ function dist_hist_html($o) {
 	foreach ($rows as $k => $r) $rows[$k]['skip'] = !$r['on'] && ($k < $last_on || $final);
 
 	$ch = dist_changes_html($oid);
-	$h = '<div class="oh_tabs"><span class="oh_tab oh_tab_act" data-t="st">'.t::w('Статус', 'Статус').'</span><span class="oh_tab" data-t="ch">'.t::w('Өзгерістер', 'Изменения').($ch[1] ? ' <i>'.$ch[1].'</i>' : '').'</span></div>';
+	$h = '<div class="oh_tabs"><span class="oh_tab oh_tab_act" data-t="st">'.t::w('Status', 'Статус').'</span><span class="oh_tab" data-t="ch">'.t::w('Changes', 'Өзгерістер').($ch[1] ? ' <i>'.$ch[1].'</i>' : '').'</span></div>';
 	$h .= '<div class="oh_pane" data-p="st"><div class="oh_list">';
 	foreach ($rows as $i => $r) {
 		$nx = @$rows[$i + 1];
@@ -35,11 +35,11 @@ function dist_hist_html($o) {
 			.($r['dt'] ? '<span class="oh_dt"><b>'.date('H:i', strtotime($r['dt'])).'</b><small>'.date('d.m.Y', strtotime($r['dt'])).'</small></span>' : '').'</div>';
 	}
 	$h .= '</div><div class="oh_foot">';
-	if (@$o['upd_dt']) $h .= '<div class="oh_row"><span class="oh_nm">'.t::w('Соңғы өзгеріс', 'Последнее изменение').'</span><span class="oh_dt"><b>'.date('H:i', strtotime($o['upd_dt'])).'</b><small>'.date('d.m.Y', strtotime($o['upd_dt'])).'</small></span></div>';
+	if (@$o['upd_dt']) $h .= '<div class="oh_row"><span class="oh_nm">'.t::w('Last change', 'Соңғы өзгеріс').'</span><span class="oh_dt"><b>'.date('H:i', strtotime($o['upd_dt'])).'</b><small>'.date('d.m.Y', strtotime($o['upd_dt'])).'</small></span></div>';
 	$au = $o['user_id'] ? fun::user($o['user_id']) : null;
-	$h .= '<div class="oh_row"><span class="oh_nm">'.t::w('Тапсырыс авторы', 'Автор заказа').'</span><span class="oh_dt"><b>'.htmlspecialchars((string)@$au['name']).'</b></span></div>';
+	$h .= '<div class="oh_row"><span class="oh_nm">'.t::w('Order author', 'Тапсырыс авторы').'</span><span class="oh_dt"><b>'.htmlspecialchars((string)@$au['name']).'</b></span></div>';
 	$h .= '</div></div>';
-	$h .= '<div class="oh_pane dsp_n" data-p="ch">'.($ch[0] !== '' ? $ch[0] : '<div class="oh_empty">'.t::w('Әзірге өзгеріс жоқ', 'Изменений пока нет').'</div>').'</div>';
+	$h .= '<div class="oh_pane dsp_n" data-p="ch">'.($ch[0] !== '' ? $ch[0] : '<div class="oh_empty">'.t::w('No changes yet', 'Әзірге өзгеріс жоқ').'</div>').'</div>';
 	return $h;
 }
 
@@ -47,9 +47,9 @@ function dist_hist_html($o) {
 // Барлық өзгерістер (кассадағыдай): кім, қашан, не өзгертті. [html, саны]
 function dist_changes_html($oid) {
 	$oid = (int)$oid;
-	$lbl = ['created' => t::w('Жасалды', 'Создан'), 'order_type' => t::w('Түрі', 'Тип'), 'courier' => t::w('Курьер', 'Курьер'), 'branch_id' => t::w('Точка', 'Точка'), 'phone' => t::w('Нөмір', 'Номер'), 'address' => t::w('Мекенжай', 'Адрес'), 'floor_apt' => t::w('Қабат, пәтер', 'Этаж, кв'), 'additional' => t::w('Қосымша', 'Примечание'), 'preorder_dt' => t::w('Предзаказ', 'Предзаказ'), 'total' => t::w('Жалпы', 'Итого'), 'pay_delivery' => t::w('Жеткізу', 'Доставка'), 'pay_qr' => t::w('Алдын ала төлем', 'Предоплата'), 'pay_cash' => t::w('Курьерге (нал)', 'Курьеру (нал)'), 'pay_prepay' => t::w('Алдын ала төлем', 'Предоплата'), 'prepay_method' => t::w('Төлем', 'Оплата'), 'payment_method' => t::w('Төлем', 'Оплата'), 'pay_transfer' => t::w('Аударым', 'Перевод'), 'pay_red' => 'RED', 'service' => t::w('Сервис', 'Сервис'), 'items' => t::w('Тағамдар', 'Блюда'), 'refuse_reason' => t::w('Себебі', 'Причина'), 'kept_sum' => t::w('Бізде қалды', 'Осталось у нас')];
-	$pm = ['transfer' => t::w('Аударым', 'Перевод'), 'qr' => 'Kaspi QR', 'cash' => t::w('Қолма-қол', 'Наличные'), 'mixed' => t::w('Аралас', 'Смешанная'), 'mix' => t::w('Аралас', 'Смешанная'), 'unpaid' => t::w('Төленбеген', 'Не оплачен'), 'red' => 'RED'];
-	$types = [1 => t::w('Жеткізу', 'Доставка'), 2 => t::w('Өзімен', 'Собой'), 3 => t::w('Сервис', 'Сервис'), 4 => t::w('Кафе', 'Кафе')];
+	$lbl = ['created' => t::w('Created', 'Жасалды'), 'order_type' => t::w('Type', 'Түрі'), 'courier' => t::w('Courier', 'Курьер'), 'branch_id' => t::w('Branch', 'Точка'), 'phone' => t::w('Phone', 'Нөмір'), 'address' => t::w('Address', 'Мекенжай'), 'floor_apt' => t::w('Floor, apt', 'Қабат, пәтер'), 'additional' => t::w('Notes', 'Қосымша'), 'preorder_dt' => t::w('Preorder', 'Предзаказ'), 'total' => t::w('Total', 'Жалпы'), 'pay_delivery' => t::w('Delivery fee', 'Жеткізу'), 'pay_qr' => t::w('Prepayment', 'Алдын ала төлем'), 'pay_cash' => t::w('To courier (cash)', 'Курьерге (нал)'), 'pay_prepay' => t::w('Prepayment', 'Алдын ала төлем'), 'prepay_method' => t::w('Payment', 'Төлем'), 'payment_method' => t::w('Payment', 'Төлем'), 'pay_transfer' => t::w('Transfer', 'Аударым'), 'pay_red' => 'RED', 'service' => t::w('Service', 'Сервис'), 'items' => t::w('Items', 'Тағамдар'), 'refuse_reason' => t::w('Reason', 'Себебі'), 'kept_sum' => t::w('Kept by us', 'Бізде қалды')];
+	$pm = ['transfer' => t::w('Transfer', 'Аударым'), 'qr' => 'Kaspi QR', 'cash' => t::w('Cash', 'Қолма-қол'), 'mixed' => t::w('Mixed', 'Аралас'), 'mix' => t::w('Mixed', 'Аралас'), 'unpaid' => t::w('Unpaid', 'Төленбеген'), 'red' => 'RED'];
+	$types = [1 => t::w('Delivery', 'Жеткізу'), 2 => t::w('Pickup', 'Өзімен'), 3 => t::w('Service', 'Сервис'), 4 => t::w('Cafe', 'Кафе')];
 	$hv = function ($f, $v) use ($pm, $types) {
 		if ($v === null || $v === '') return '—';
 		$v = trim(html_entity_decode(strip_tags((string)$v)));
@@ -79,7 +79,7 @@ function dist_changes_html($oid) {
 		if ($f == 'created') $val = '<span class="oh_new">'.htmlspecialchars((string)$c['new_value']).'</span>';
 		elseif ($f == 'items') {
 			$val = ''; foreach ($idiff($c['old_value'], $c['new_value']) as $d) $val .= '<span class="oh_it oh_it_'.$d[0].'">'.htmlspecialchars($d[1]).'</span>';
-			if (isset($sum_at[$c['ins_dt']])) { $t = $sum_at[$c['ins_dt']]; $val .= '<span class="oh_sum">'.t::w('Жалпы', 'Итого').': '.((string)$t['old_value'] !== '' ? '<s>'.htmlspecialchars($hv('total', $t['old_value'])).'</s> → ' : '').'<b>'.htmlspecialchars($hv('total', $t['new_value'])).'</b></span>'; }
+			if (isset($sum_at[$c['ins_dt']])) { $t = $sum_at[$c['ins_dt']]; $val .= '<span class="oh_sum">'.t::w('Total', 'Жалпы').': '.((string)$t['old_value'] !== '' ? '<s>'.htmlspecialchars($hv('total', $t['old_value'])).'</s> → ' : '').'<b>'.htmlspecialchars($hv('total', $t['new_value'])).'</b></span>'; }
 			if ($val === '') continue;
 		}
 		else $val = ((string)$c['old_value'] === '' ? '' : '<s>'.htmlspecialchars($hv($f, $c['old_value'])).'</s> → ').'<b>'.htmlspecialchars($hv($f, $c['new_value'])).'</b>';

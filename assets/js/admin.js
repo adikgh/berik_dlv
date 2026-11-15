@@ -30,7 +30,7 @@ $(document).ready(function() {
 			}),
 			success: function(data){
 				if (data == 'add') location.reload();
-				else if (data == 'yes') mess('Бұл адамда уже доступ бар')
+				else if (data == 'yes') mess(w('js:has_access', 'Бұл адамда қолжетімділік бар'))
 				else console.log(data)
 			},
 			beforeSend: function(){},
@@ -178,7 +178,7 @@ $(document).ready(function() {
             if (data == 'yes') {
                if ($(window).width() < 501) location.reload()
                else btn.parents('.uc_ui').remove()
-               mess('Өшірілді')
+               mess(w('js:deleted', 'Өшірілді'))
             }
             console.log(data)
          },
@@ -234,7 +234,7 @@ $(document).ready(function() {
 		$('#html').removeClass('ovr_h');
 	})
 	$('.btn_company_edit').click(function () {
-		if ($('.company_name').val().length <= 2) mess('Атыңызды толтырыңыз')
+		if ($('.company_name').val().length <= 2) mess(w('js:acc_name', 'Атыңызды жазыңыз'))
 		else {
 			$.ajax({
 				url: "/admin/get.php?company_edit",
@@ -249,7 +249,7 @@ $(document).ready(function() {
 				}),
 				success: function(data){
 					if (data == 'yes') {
-						mess('Cәтті сақталды!')
+						mess(w('js:saved_ok', 'Сәтті сақталды!'))
 						$('.company_edit_block').removeClass('pop_bl_act');
 						setTimeout(function() { location.reload(); }, 500);
 					} else console.log(data);

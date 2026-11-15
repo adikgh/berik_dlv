@@ -56,4 +56,5 @@
 <? if (@$site_set['aos'] == true): ?> <script src="/assets/pl/aos.js"></script> <? endif ?>
 <? if (@$site_set['autosize'] == true): ?> <script src="/assets/pl/autosize.min.js"></script> <? endif ?>
 <script src="<?=fun::asset('js/fun.js')?>"></script>
+<script>var W = <?=json_encode(t::all(), JSON_UNESCAPED_UNICODE)?>; function w(k, d){ return (W && W[k]) ? W[k] : (d || k) } // сөздер, кассадағыдай</script>
 

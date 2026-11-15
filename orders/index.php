@@ -81,15 +81,15 @@
 										<? endif ?>
 										<? if ($buy_d['order_status'] == 3): // Жолда: Жеткіздім (4) / Отказ при получение (6) ?>
 											<div class="uc_uil2_chek">
-												<div class="btn on_check uc_chk_btn" data-id="<?=$buy_d['id']?>" data-num="<?=e($buy_d['number'])?>" data-rest="<?=(int)$rest_sum?>"><i class="far fa-check"></i><span>Тапсырдым</span></div>
+												<div class="btn on_check uc_chk_btn" data-id="<?=$buy_d['id']?>" data-num="<?=e($buy_d['number'])?>" data-rest="<?=(int)$rest_sum?>"><i class="far fa-check"></i><span><?=t::w('Delivered it', 'Тапсырдым')?></span></div>
 											</div>
 										<? endif ?>
 									</div>
 									<div class="uc_uil2_raz">
 										<div class="uc_uil2_trt">
-											<div class="uc_uil2_trt1">Атауы</div>
-											<div class="uc_uil2_trt2">Саны</div>
-											<div class="uc_uil2_trt3">Бағасы</div>
+											<div class="uc_uil2_trt1"><?=t::w('Name', 'Атауы')?></div>
+											<div class="uc_uil2_trt2"><?=t::w('Qty', 'Саны')?></div>
+											<div class="uc_uil2_trt3"><?=t::w('Price', 'Бағасы')?></div>
 										</div>
 										<div class="uc_uil2_trc">
 
@@ -108,7 +108,7 @@
 													?>
 													<div class="uc_uil2_trt">
 														<div class="uc_uil2_trt1"><?=$number?>. <?=$product_d['name_ru']?></div>
-														<div class="uc_uil2_trt2"><?=$sel_d['quantity']?> шт</div>
+														<div class="uc_uil2_trt2"><?=$sel_d['quantity']?> <?=t::w('pcs', 'шт')?></div>
 														<!-- <div class=""><?=$sel_d['price']?></div> -->
 														<div class="uc_uil2_trt3 fr_price"><?=$sum?></div>
 													</div>
@@ -116,7 +116,7 @@
 											<? endif ?>
 											
 											<div class="uc_uil2_trt">
-												<div class="uc_uil2_trt1">Доставка</div>
+												<div class="uc_uil2_trt1"><?=t::w('Delivery fee', 'Жеткізу')?></div>
 												<div class="uc_uil2_trt3 fr_price"><?=$buy_d['pay_delivery']?></div>
 											</div>
 											<? if (!class_exists('promo')) require_once $_SERVER['DOCUMENT_ROOT'].'/config/promo.php'; $pr_p = promo::on() ? promo::of($buy_d) : null; if ($pr_p): // Акция жеңілдігі ?>
@@ -127,13 +127,13 @@
 											</div>
 											<? endif ?>
 											<div class="uc_uil2_trt">
-												<div class="uc_uil2_trt1">Предоплата</div>
+												<div class="uc_uil2_trt1"><?=t::w('Prepayment', 'Алдын ала төлем')?></div>
 												<div class="uc_uil2_trt2">-</div>
 												<div class="uc_uil2_trt3 fr_price"><?=$pre_sum?></div>
 											</div>
 										</div>
 										<div class="uc_uil2_trb">
-											<div class="uc_uil2_trt1">К оплате</div>
+											<div class="uc_uil2_trt1"><?=t::w('To pay', 'Төлеуге')?></div>
 											<div class="uc_uil2_trt2"></div>
 											<div class="uc_uil2_trt3 fr_price"><?=$rest_sum?></div>
 										</div>
@@ -141,32 +141,32 @@
 									<? if ($buy_d['address']): $route_addr[] = $buy_d['address']; $route_ids[] = (int)$buy_d['id']; if (!isset($route_start)) $route_start = trim((string)@$branch_d['address']); ?>
 										<div class="uc_uil2_raz">
 											<div class="uc_uil2_mi">
-												<div class="uc_uil2_mi1">Адрес:</div>
+												<div class="uc_uil2_mi1"><?=t::w('Address', 'Мекенжай')?>:</div>
 												<div class="uc_uil2_mi2"><?=htmlspecialchars($buy_d['address'])?></div>
 											</div>
 											<? $fa = trim((string)$buy_d['floor_apt']); if ($fa !== ''): ?>
 												<div class="uc_uil2_fa"><i class="far fa-building"></i> <?=htmlspecialchars(str_replace(', ', ' · ', $fa))?></div>
 											<? endif ?>
 											<div class="uc_uil2_mib uc_uil2_mib1">
-												<a class="btn btn_map" href="<?=e(fun::map_url($map_app, $city, $buy_d['address']))?>" target="_blank"><i class="far fa-map-marked-alt"></i><span>Картадан ашу</span><small><?=($map_app == 'yandex' ? 'Яндекс' : '2GIS')?></small></a>
+												<a class="btn btn_map" href="<?=e(fun::map_url($map_app, $city, $buy_d['address']))?>" target="_blank"><i class="far fa-map-marked-alt"></i><span><?=t::w('Open on map', 'Картадан ашу')?></span><small><?=($map_app == 'yandex' ? t::w('Yandex', 'Яндекс') : '2GIS')?></small></a>
 											</div>
 										</div>
 									<? endif ?>
 									<? if ($buy_d['phone']): ?>
 										<div class="uc_uil2_raz">
 											<div class="uc_uil2_mi">
-												<div class="uc_uil2_mi1">Номер:</div>
+												<div class="uc_uil2_mi1"><?=t::w('Phone', 'Нөмір')?>:</div>
 												<div class="uc_uil2_mi2 fr_phone"><?=$buy_d['phone']?></div>
 											</div>
 											<div class="uc_uil2_mib">
-												<a class="btn btn_phone" href="tel:8<?=$buy_d['phone']?>">Званок</a>
+												<a class="btn btn_phone" href="tel:8<?=$buy_d['phone']?>"><?=t::w('Call', 'Қоңырау')?></a>
 												<a class="btn btn_whatsapp" href="https://wa.me/7<?=$buy_d['phone']?>" target="_blank">Whatsapp</a>
 											</div>
 										</div>
 									<? endif ?>
 
 									<div class="uc_uil2_raz uc_uil2_mib uc_uil2_mib1">
-										<a class="btn btn_cl" href="<?=$item_url?>">Толығырақ</a>
+										<a class="btn btn_cl" href="<?=$item_url?>"><?=t::w('Details', 'Толығырақ')?></a>
 									</div>
 
 									<!-- <div class="uc_uin_other fr_price"><?=$buy_d['pay_qr']?> </div> -->
@@ -192,10 +192,10 @@
 
 						<? endwhile ?>
 					<? else: ?>
-						<div class="ds_nr"><i class="fal fa-inbox"></i><p><?=($sort == 'history' ? 'Бұл күні тапсырыс жоқ' : 'Әзірге тапсырыс жоқ')?></p><small><?=($sort == 'history' ? 'Басқа күнді таңдап көріңіз' : 'Жаңа тапсырыс келгенде осы жерде шығады')?></small></div>
+						<div class="ds_nr"><i class="fal fa-inbox"></i><p><?=($sort == 'history' ? t::w('No orders on this day', 'Бұл күні тапсырыс жоқ') : t::w('No orders yet', 'Әзірге тапсырыс жоқ'))?></p><small><?=($sort == 'history' ? t::w('Try another day', 'Басқа күнді таңдап көріңіз') : t::w('New orders will appear here', 'Жаңа тапсырыс келгенде осы жерде шығады'))?></small></div>
 					<? endif ?>
 				<? else: ?>
-					<div class="ds_nr"><i class="fal fa-inbox"></i><p><?=($sort == 'history' ? 'Бұл күні тапсырыс жоқ' : 'Әзірге тапсырыс жоқ')?></p><small><?=($sort == 'history' ? 'Басқа күнді таңдап көріңіз' : 'Жаңа тапсырыс келгенде осы жерде шығады')?></small></div>
+					<div class="ds_nr"><i class="fal fa-inbox"></i><p><?=($sort == 'history' ? t::w('No orders on this day', 'Бұл күні тапсырыс жоқ') : t::w('No orders yet', 'Әзірге тапсырыс жоқ'))?></p><small><?=($sort == 'history' ? t::w('Try another day', 'Басқа күнді таңдап көріңіз') : t::w('New orders will appear here', 'Жаңа тапсырыс келгенде осы жерде шығады'))?></small></div>
 				<? endif ?>
 
 			</div>
@@ -205,9 +205,9 @@
 			<? if (!empty($take_ids) || $show_route): ?>
 				<div class="take_all_bar">
 					<? if (!empty($take_ids)): ?>
-						<div class="btn on_take_all" data-ids="<?=implode(',', $take_ids)?>"><i class="far fa-check-double"></i><span>Барлығын қабылдау</span><b class="tab_cnt"><?=count($take_ids)?></b></div>
+						<div class="btn on_take_all" data-ids="<?=implode(',', $take_ids)?>"><i class="far fa-check-double"></i><span><?=t::w('Accept all', 'Барлығын қабылдау')?></span><b class="tab_cnt"><?=count($take_ids)?></b></div>
 					<? else: ?>
-						<a class="btn on_route" href="<?=e('/orders/route.php?ids='.implode(',', $route_ids))?>" target="_blank"><i class="far fa-route"></i><span>Маршрут құру</span><b class="tab_cnt"><?=count($route_addr)?></b></a>
+						<a class="btn on_route" href="<?=e('/orders/route.php?ids='.implode(',', $route_ids))?>" target="_blank"><i class="far fa-route"></i><span><?=t::w('Build route', 'Маршрут құру')?></span><b class="tab_cnt"><?=count($route_addr)?></b></a>
 					<? endif ?>
 				</div>
 			<? endif ?>
@@ -225,9 +225,9 @@
 
 				<div class="hil_headc">
 					<? if ($sort == 'history'): ?>
-						<h4 class="hil_headc1 txt_c">Орындалған заказдар</h4>
+						<h4 class="hil_headc1 txt_c"><?=t::w('Completed orders', 'Орындалған тапсырыстар')?></h4>
 					<? else: ?>
-						<h4 class="hil_headc1 txt_c">Жеткізу қажет заказдар</h4>
+						<h4 class="hil_headc1 txt_c"><?=t::w('Orders to deliver', 'Жеткізу қажет тапсырыстар')?></h4>
 					<? endif ?>
 					<? if ($sort != 'new'): ?>
 						<!-- <div class="hil_fr1">
@@ -247,21 +247,21 @@
 					<? endif ?>
 					<div class="hil_headc2">
 						<div class="hil_headc2s">
-							<span>Заказ саны:</span>
-							<p><?=$allorder['number']?> шт</p>
+							<span><?=t::w('Number of orders', 'Тапсырыс саны')?>:</span>
+							<p><?=$allorder['number']?> <?=t::w('pcs', 'шт')?></p>
 						</div>
 						<div class="hil_headc2s">
-							<span>Доставкаға:</span>
+							<span><?=t::w('For delivery', 'Жеткізуге')?>:</span>
 							<p class="fr_price"><?=$allorder['pay_delivery']?></p>
 						</div>
 						<? if ($sort != 'new'): ?>
 							<div class="hil_headc2s">
-								<span>Предоплата:</span>
+								<span><?=t::w('Prepayment', 'Алдын ала төлем')?>:</span>
 								<p class="fr_price"><?=$allorder['pay_qr']?></p>
 							</div>
 							<? $kas = (int)$allorder['pay_cash']; // минус: касса курьерге қайтарады ?>
 							<div class="hil_headc2s">
-								<span>Кассаға:</span>
+								<span><?=t::w('To cash desk', 'Кассаға')?>:</span>
 								<p<?=($kas < 0 ? ' class="hil_red"' : '')?>><?=($kas < 0 ? '−' : '').number_format(abs($kas), 0, '', ' ')?> тг</p>
 							</div>
 						<? endif ?>

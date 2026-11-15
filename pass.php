@@ -17,20 +17,20 @@
 		<div class="bl_c">
 			<div class="usign_c">
 
-				<div class="usign_head"><h3 class="usign_h">Жаңа пароль орнату керек</h3></div>
+				<div class="usign_head"><h3 class="usign_h"><?=t::w('Set a new password', 'Жаңа пароль орнату керек')?></h3></div>
 				<div class="usign_cn">
 					<div class="form_im form_im_ps">
 						<i class="far fa-lock form_icon"></i>
-						<input type="password" name="pass_new" class="form_txt password password_new1" placeholder="Пароль" data-lenght="6" data-sel="0" data-eye="0" />
+						<input type="password" name="pass_new" class="form_txt password password_new1" placeholder="<?=t::h('Password (field)', 'Пароль')?>" data-lenght="6" data-sel="0" data-eye="0" />
 						<i class="far fa-eye-slash form_icon_pass"></i>
 					</div>
 					<div class="form_im form_im_ps">
 						<i class="far fa-lock form_icon"></i>
-						<input type="password" name="pass_new2" class="form_txt password password_new2" placeholder="Парольді қайтала" data-lenght="6" data-sel="0" data-eye="0" />
+						<input type="password" name="pass_new2" class="form_txt password password_new2" placeholder="<?=t::h('Repeat password', 'Парольді қайталаңыз')?>" data-lenght="6" data-sel="0" data-eye="0" />
 						<i class="far fa-eye-slash form_icon_pass"></i>
 					</div>
 					<div class="form_im">
-						<button class="btn btn_pass_ubd">Сақтау</button>
+						<button class="btn btn_pass_ubd"><?=t::w('Save', 'Сақтау')?></button>
 					</div>
 				</div>
 

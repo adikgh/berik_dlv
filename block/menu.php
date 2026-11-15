@@ -2,10 +2,10 @@
 <? if ($dist): // Раздача: тапсырыс түрлері + аккаунт ?>
 	<? // Тапсырыс түрлері базадан (retail_orders_type), компанияда өшірулі түр (company.delivery / yourself / service / coffee) шықпайды
 		$pm_types = [
-			'delivery' => ['sort' => 'new', 'menu' => 'car', 'ico' => 'fa-car', 'kz' => 'Жеткізу', 'ru' => 'Доставка'],
-			'yourself' => ['sort' => 'myself', 'menu' => 'user', 'ico' => 'fa-walking', 'kz' => 'Өзімен', 'ru' => 'Собой'],
-			'service' => ['sort' => 'service', 'menu' => 'service', 'ico' => 'fa-backpack', 'kz' => 'Сервис', 'ru' => 'Сервис'],
-			'coffee' => ['sort' => 'coffee', 'menu' => 'coffee', 'ico' => 'fa-utensils', 'kz' => 'Кафе', 'ru' => 'Кафе'],
+			'delivery' => ['sort' => 'new', 'menu' => 'car', 'ico' => 'fa-car', 'key' => 'Delivery', 'kz' => 'Жеткізу'],
+			'yourself' => ['sort' => 'myself', 'menu' => 'user', 'ico' => 'fa-walking', 'key' => 'Pickup', 'kz' => 'Өзімен'],
+			'service' => ['sort' => 'service', 'menu' => 'service', 'ico' => 'fa-backpack', 'key' => 'Service', 'kz' => 'Сервис'],
+			'coffee' => ['sort' => 'coffee', 'menu' => 'coffee', 'ico' => 'fa-utensils', 'key' => 'Cafe', 'kz' => 'Кафе'],
 		];
 		$pm_q = db::query("select nms from retail_orders_type order by number asc"); ?>
 	<div class="pmenu">
@@ -15,13 +15,13 @@
 				<? if ($pm && !empty($company_d[$pm_t['nms']])): ?>
 					<a class="pmenu_i <?=($menu_name == $pm['menu'] ? 'pmenu_i_act' : '')?>" href="/orders/?sort=<?=$pm['sort']?>">
 						<i class="far <?=$pm['ico']?>"></i>
-						<span><?=t::w($pm['kz'], $pm['ru'])?></span>
+						<span><?=t::w($pm['key'], $pm['kz'])?></span>
 					</a>
 				<? endif ?>
 			<? endwhile ?>
 			<a class="pmenu_i <?=($menu_name=='acc' || $menu_name=='users' || $menu_name=='none'?'pmenu_i_act':'')?>" href="/acc/">
 				<i class="far fa-user"></i>
-				<span><?=t::w('Аккаунт', 'Аккаунт')?></span>
+				<span><?=t::w('Account', 'Аккаунт')?></span>
 			</a>
 		</div>
 	</div>
@@ -32,17 +32,17 @@
 			<? if ($super == 6): ?>
 				<a class="pmenu_i txt_c <?=($menu_name=='new'?'pmenu_i_act':'')?>" href="/orders/?sort=new">
 					<i class="far fa-list-ol"></i>
-					<span>Жаңа</span>
+					<span><?=t::w('New', 'Жаңа')?></span>
 				</a>
 				<a class="pmenu_i <?=($menu_name=='history'?'pmenu_i_act':'')?>" href="/orders/?sort=history">
 					<i class="far fa-clipboard-list-check"></i>
-					<span>Тапсырылған</span>
+					<span><?=t::w('Delivered', 'Тапсырылған')?></span>
 				</a>
 			<? endif ?>
 
 			<a class="pmenu_i <?=($menu_name=='acc'?'pmenu_i_act':'')?>" href="/acc/">
 				<i class="far fa-user"></i>
-				<span>Аккаунт</span>
+				<span><?=t::w('Account', 'Аккаунт')?></span>
 			</a>
 		</div>
    </div>

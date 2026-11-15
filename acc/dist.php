@@ -6,10 +6,10 @@
 
 	// Сайттың баптаулары
 	$menu_name = 'acc';
-	$site_set['utop_nm'] = t::w('Жеке деректер', 'Личные данные');
+	$site_set['utop_nm'] = t::w('Personal data', 'Жеке деректер');
 	$css = ['acc'];
 	$js = ['admin'];
-	$pos_nm = [1 => t::w('Создатель', 'Создатель'), 2 => t::w('Директор', 'Директор'), 3 => t::w('Басқарушы', 'Управляющий'), 8 => t::w('Раздача', 'Раздача')];
+	$pos_nm = [1 => t::w('Creator', 'Создатель'), 2 => t::w('Director', 'Директор'), 3 => t::w('Manager', 'Басқарушы'), 8 => t::w('Dispatch', 'Раздача')];
 ?>
 <? include "../block/header.php"; ?>
 
@@ -29,10 +29,10 @@
 			</div>
 
 			<div class="bp_box">
-				<div class="bp_box_h"><i class="far fa-globe"></i> <?=t::w('Тіл', 'Язык')?></div>
+				<div class="bp_box_h"><i class="far fa-globe"></i> <?=t::w('Language', 'Тіл')?></div>
 				<div class="bp_lang">
 					<? foreach ($langs_short as $lk => $lv): ?>
-						<a class="bp_lang_i <?=($lang == $lk ? 'bp_lang_act' : '')?>" href="?lang=<?=$lk?>"><?=$lv?></a>
+						<a class="bp_lang_i <?=($ui_lang == $lk ? 'bp_lang_act' : '')?>" href="?lang=<?=$lk?>"><?=$lv?></a>
 					<? endforeach ?>
 				</div>
 			</div>
@@ -40,23 +40,23 @@
 			<div class="bp_box bp_list">
 				<a class="bp_li" href="/orders/?sort=none">
 					<span class="bp_li_ic"><i class="far fa-ban"></i></span>
-					<span class="bp_li_t"><?=t::w('Бас тарту', 'Отказы')?></span>
+					<span class="bp_li_t"><?=t::w('Refusals', 'Бас тарту')?></span>
 					<i class="far fa-chevron-right bp_li_ar"></i>
 				</a>
 				<a class="bp_li" href="/users/">
 					<span class="bp_li_ic"><i class="far fa-users"></i></span>
-					<span class="bp_li_t"><?=t::w('Курьерлер', 'Курьеры')?></span>
+					<span class="bp_li_t"><?=t::w('Couriers', 'Курьерлер')?></span>
 					<i class="far fa-chevron-right bp_li_ar"></i>
 				</a>
 				<div class="bp_li pass_ubd_btn">
 					<span class="bp_li_ic"><i class="far fa-key"></i></span>
-					<span class="bp_li_t"><?=t::w('Құпиясөзді өзгерту', 'Сменить пароль')?></span>
+					<span class="bp_li_t"><?=t::w('Change password', 'Құпиясөзді өзгерту')?></span>
 					<i class="far fa-chevron-right bp_li_ar"></i>
 				</div>
 				<? if (@$site['whatsapp']): ?>
 					<a class="bp_li" href="https://wa.me/<?=htmlspecialchars($site['whatsapp'])?>" target="_blank" rel="noopener">
 						<span class="bp_li_ic"><i class="fab fa-whatsapp"></i></span>
-						<span class="bp_li_t"><?=t::w('Көмек (WhatsApp)', 'Помощь (WhatsApp)')?></span>
+						<span class="bp_li_t"><?=t::w('Help (WhatsApp)', 'Көмек (WhatsApp)')?></span>
 						<i class="far fa-chevron-right bp_li_ar"></i>
 					</a>
 				<? endif ?>
@@ -64,14 +64,14 @@
 
 			<a class="bp_exit" href="/exit.php">
 				<i class="far fa-sign-out"></i>
-				<span><?=t::w('Шығу', 'Выйти')?></span>
+				<span><?=t::w('Log out', 'Шығу')?></span>
 			</a>
 
 			<div class="up_cg">
 				<a href="https://gprog.kz" target="_blank" rel="noopener" class="gprog_bl">
 					<span>#gprog-та</span>
 					<div class="gprog_heart"><i class="fas fa-heart"></i></div>
-					<span><?=t::w('жасалған', 'сделано')?></span>
+					<span><?=t::w('made', 'жасалған')?></span>
 				</a>
 				<div class="up_brand">Berik POS</div>
 			</div>
@@ -86,18 +86,18 @@
 		<div class="pop_bl_a pass_ubd_back"></div>
 		<div class="pop_bl_c">
 			<div class="head_c">
-				<h4><?=t::w('Құпиясөзді өзгерту', 'Сменить пароль')?></h4>
+				<h4><?=t::w('Change password', 'Құпиясөзді өзгерту')?></h4>
 				<div class="btn btn_dd pass_ubd_back"><i class="fal fa-times"></i></div>
 			</div>
 			<div class="pop_bl_cl">
 				<div class="form_c">
 					<div class="form_im ">
-						<div class="form_span"><?=t::w('Құпиясөз', 'Пароль')?>:</div>
-						<input type="text" class="form_txt pass" placeholder="<?=t::h('Жаңа құпиясөз', 'Новый пароль')?>" data-lenght="6">
+						<div class="form_span"><?=t::w('Password', 'Құпиясөз')?>:</div>
+						<input type="text" class="form_txt pass" placeholder="<?=t::h('New password', 'Жаңа құпиясөз')?>" data-lenght="6">
 						<i class="fal fa-key form_icon"></i>
 					</div>
 					<div class="form_im form_im_bn">
-						<div class="btn pass_ubd_send" data-id="<?=$user_id?>"><?=t::w('Сақтау', 'Сохранить')?></div>
+						<div class="btn pass_ubd_send" data-id="<?=$user_id?>"><?=t::w('Save', 'Сақтау')?></div>
 					</div>
 				</div>
 			</div>

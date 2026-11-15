@@ -54,11 +54,11 @@ $(document).ready(function() {
 
 	// Отказ при получение: бізде қалған соманы сұрау
 	$('html').on('click', '.on_refuse', function () {
-		var btn = $(this), kept = prompt('Отказ при получение. Бізде қалған сома (тг):', btn.data('kept'))
+		var btn = $(this), kept = prompt(w('js:refuse_kept', 'Алғанда бас тарту. Бізде қалған сома (тг):'), btn.data('kept'))
 		if (kept === null) return
-		var reason = prompt('Отказ себебі:', '')
+		var reason = prompt(w('Refusal reason', 'Отказ себебі') + ':', '')
 		if (reason === null) return
-		if (!$.trim(reason)) { alert('Отказ себебін жазыңыз'); return }
+		if (!$.trim(reason)) { alert(w('js:write_reason', 'Бас тарту себебін жазыңыз')); return }
 		$.ajax({
 			url: "/orders/get.php?refuse", type: "POST", dataType: "html",
 			data: ({ id: btn.data('id'), kept: String(kept).replace(/\D/g, '') || '0', reason: $.trim(reason) }),

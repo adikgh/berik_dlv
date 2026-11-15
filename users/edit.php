@@ -7,18 +7,18 @@
 
         <div class="form_c">
             <div class="form_im ">
-                <div class="form_span"><?=t::w('Аты', 'Имя')?>:</div>
+                <div class="form_span"><?=t::w('First name', 'Аты')?>:</div>
                 <input type="text" class="form_txt edit_name" placeholder="" data-lenght="2" value="<?=$user_ed['name']?>">
                 <i class="fal fa-text form_icon"></i>
             </div>
             <div class="form_im ">
-                <div class="form_span"><?=t::w('Телефон нөмірі', 'Номер телефона')?>:</div>
+                <div class="form_span"><?=t::w('Phone number', 'Телефон нөмірі')?>:</div>
                 <input type="tel" class="form_txt edit_phone fr_phone" placeholder="8 (700) 000-00-00" data-lenght="11" value="<?=$user_ed['phone']?>">
                 <i class="fal fa-mobile form_icon"></i>
             </div>
             <div class="form_im form_im_bn">
                 <div class="btn edit_user_send" data-id="<?=$user_ed['id']?>">
-                    <span><?=t::w('Сақтау', 'Сохранить')?></span>
+                    <span><?=t::w('Save', 'Сақтау')?></span>
                 </div>
             </div>
         </div>

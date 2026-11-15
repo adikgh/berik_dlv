@@ -2,9 +2,9 @@
 $(function () {
 
 	// ---------- Дата: ← күн → , Бүгін, өз күнтізбеміз (админдегідей) ----------
-	var months = ['қаңтар','ақпан','наурыз','сәуір','мамыр','маусым','шілде','тамыз','қыркүйек','қазан','қараша','желтоқсан'];
-	var days = ['жексенбі','дүйсенбі','сейсенбі','сәрсенбі','бейсенбі','жұма','сенбі'];
-	var wd_short = ['Дс','Сс','Ср','Бс','Жм','Сб','Жс'];
+	var months = w('js:months', 'қаңтар,ақпан,наурыз,сәуір,мамыр,маусым,шілде,тамыз,қыркүйек,қазан,қараша,желтоқсан').split(',');
+	var days = w('js:days', 'жексенбі,дүйсенбі,сейсенбі,сәрсенбі,бейсенбі,жұма,сенбі').split(',');
+	var wd_short = w('js:wd_short', 'Дс,Сс,Ср,Бс,Жм,Сб,Жс').split(',');
 	function ymd(d) { return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2) }
 	function parse(v) { var p = (v || '').split('-'); return p.length == 3 ? new Date(+p[0], +p[1] - 1, +p[2]) : null }
 	function workToday() { return ymd(new Date(Date.now() - 6 * 3600 * 1000)) } // жұмыс күні 06:00-де басталады
@@ -20,12 +20,12 @@ $(function () {
 		var box = $('<div class="bdt"></div>');
 		var main = $('<label class="bdt_main"><i class="fal fa-calendar-alt"></i><span class="bdt_txt"></span></label>');
 		inp.before(box);
-		box.append('<div class="bdt_arr bdt_prev" title="Алдыңғы күн"><i class="far fa-angle-left"></i></div>').append(main);
+		box.append('<div class="bdt_arr bdt_prev" title="' + w('js:prev_day', 'Алдыңғы күн') + '"><i class="far fa-angle-left"></i></div>').append(main);
 		main.append(inp);
-		box.append('<div class="bdt_arr bdt_next" title="Келесі күн"><i class="far fa-angle-right"></i></div>');
+		box.append('<div class="bdt_arr bdt_next" title="' + w('js:next_day', 'Келесі күн') + '"><i class="far fa-angle-right"></i></div>');
 		var is_cur = sel == today;
-		if (!is_cur) box.append('<div class="bdt_today">Бүгін</div>'); else box.addClass('bdt_is_today');
-		main.find('.bdt_txt').text((is_cur ? 'Бүгін · ' : '') + nice(sel));
+		if (!is_cur) box.append('<div class="bdt_today">' + w('js:today', 'Бүгін') + '</div>'); else box.addClass('bdt_is_today');
+		main.find('.bdt_txt').text((is_cur ? w('js:today', 'Бүгін') + ' · ' : '') + nice(sel));
 
 		var cal = $('<div class="bcal"></div>');
 		$('body').append(cal);
@@ -43,7 +43,7 @@ $(function () {
 				h += '<div class="' + c + '" data-v="' + v + '">' + d.getDate() + '</div>';
 				if (i == 34 && d.getMonth() != m) break;
 			}
-			cal.html(h + '</div><div class="bcal_foot"><div class="bcal_today">Бүгін</div></div>');
+			cal.html(h + '</div><div class="bcal_foot"><div class="bcal_today">' + w('js:today', 'Бүгін') + '</div></div>');
 		}
 		function place() {
 			var r = main[0].getBoundingClientRect(), cw = cal.outerWidth();
@@ -79,7 +79,7 @@ $(function () {
 	$('.on_acc_toggle').on('click', function () { acc_drw(true) });
 	$('.on_acc_close').on('click', function () { acc_drw(false) });
 	$(document).on('keydown', function (e) { if (e.key == 'Escape' && $('.acc_drw_act').length) acc_drw(false) });
-	var acc_err = { name: 'Атыңызды жазыңыз', phone: 'Телефон 10 цифр болуы керек: 7001234567', phone_busy: 'Бұл телефон басқа қызметкерде тіркелген', csrf: 'Бетті жаңартып, қайта көріңіз', none: 'Қайта кіріңіз' };
+	var acc_err = { name: w('js:acc_name', 'Атыңызды жазыңыз'), phone: w('js:acc_phone', 'Телефон 10 цифр болуы керек: 7001234567'), phone_busy: w('js:phone_busy', 'Бұл телефон басқа қызметкерде тіркелген'), csrf: w('js:csrf', 'Бетті жаңартып, қайта көріңіз'), none: w('js:relogin', 'Қайта кіріңіз') };
 	$('.acc_form').on('submit', function (e) {
 		e.preventDefault();
 		var f = $(this), btn = f.find('.acc_save'), msg = f.find('.acc_msg');
@@ -90,19 +90,19 @@ $(function () {
 			success: function (d) {
 				d = $.trim(d);
 				if (d == 'yes') {
-					msg.addClass('acc_msg_ok').text('Сақталды');
+					msg.addClass('acc_msg_ok').text(w('js:saved', 'Сақталды'));
 					setTimeout(function () { acc_drw(false) }, 700);
 					$('.up_name').text($.trim(f.find('[name=name]').val() + ' ' + f.find('[name=surname]').val()));
 					$('.up_phone').text(f.find('[name=phone]').val().replace(/\D/g, '').slice(-10));
-				} else msg.addClass('acc_msg_err').text(acc_err[d] || 'Сақталмады, қайта көріңіз');
+				} else msg.addClass('acc_msg_err').text(acc_err[d] || w('js:not_saved', 'Сақталмады, қайта көріңіз'));
 			},
-			error: function () { msg.addClass('acc_msg_err').text('Байланыс жоқ, қайта көріңіз') },
+			error: function () { msg.addClass('acc_msg_err').text(w('js:no_net', 'Байланыс жоқ, қайта көріңіз')) },
 			complete: function () { btn.removeClass('btn_wait') }
 		});
 	});
 
 	// Профиль фотосы: таңдау → тексеру → жүктеу → бірден көрсету
-	var img_err = { file: 'Файл жүктелмеді', size: 'Фото 8 МБ-тан аспауы керек', type: 'Тек JPG, PNG немесе WEBP фото', save: 'Сақталмады, қайта көріңіз', csrf: 'Бетті жаңартып, қайта көріңіз', none: 'Қайта кіріңіз' };
+	var img_err = { file: w('js:img_file', 'Файл жүктелмеді'), size: w('js:img_size', 'Фото 8 МБ-тан аспауы керек'), type: w('js:img_type', 'Тек JPG, PNG немесе WEBP фото'), save: w('js:not_saved', 'Сақталмады, қайта көріңіз'), csrf: w('js:csrf', 'Бетті жаңартып, қайта көріңіз'), none: w('js:relogin', 'Қайта кіріңіз') };
 	$('.on_acc_img').on('change', function () {
 		var inp = this, f = inp.files && inp.files[0], logo = $('.up_logo');
 		if (!f) return;
@@ -116,7 +116,7 @@ $(function () {
 				if (r && r.ok) logo.html('<div class="up_logo_c" style="background-image:url(\'' + r.img + '\')"></div>');
 				else alert(img_err[$.trim(d)] || img_err.save);
 			},
-			error: function () { alert('Байланыс жоқ, қайта көріңіз') },
+			error: function () { alert(w('js:no_net', 'Байланыс жоқ, қайта көріңіз')) },
 			complete: function () { logo.removeClass('up_logo_wait'); inp.value = '' }
 		});
 	});
@@ -157,7 +157,7 @@ $('html').on('click', '.on_map_app', function () {
 $('html').on('change', '.on_route_return', function () {
 	var inp = $(this), on = inp.prop('checked') ? 1 : 0
 	$.ajax({ url: "/get.php?route_return", type: "POST", dataType: "html", data: ({ on: on, csrf: $('.up').attr('data-csrf') }),
-		success: function (d) { if ($.trim(d) != 'yes') { inp.prop('checked', !on); alert('Сақталмады, қайта көріңіз') } },
+		success: function (d) { if ($.trim(d) != 'yes') { inp.prop('checked', !on); alert(w('js:not_saved', 'Сақталмады, қайта көріңіз')) } },
 		error: function () { inp.prop('checked', !on) } })
 })
 
@@ -166,13 +166,13 @@ $('html').on('change', '.on_route_return', function () {
 ;(function () {
 	var fmt = function (n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' тг' }
 	var sh = $('<div class="acc_drw pay_drw" aria-hidden="true"><div class="acc_drw_a pay_close"></div><div class="acc_drw_c" role="dialog">' +
-		'<div class="acc_drw_grab"></div><div class="acc_drw_hd"><h4>Тапсырыс <span class="pay_num"></span></h4><div class="btn btn_cl pay_close" title="Жабу"><i class="far fa-times"></i></div></div>' +
-		'<div class="pay_sum"><span>Клиенттен алу керек</span><b class="pay_rest"></b></div>' +
-		'<div class="pay_lbl">Немен алдыңыз?</div>' +
-		'<div class="pay_ms"><div class="pay_m" data-m="cash"><i class="far fa-money-bill-wave"></i><span>Қолма-қол</span></div><div class="pay_m" data-m="kaspi"><i class="far fa-mobile-alt"></i><span>Kaspi</span></div><div class="pay_m" data-m="mix"><i class="far fa-random"></i><span>Аралас</span></div></div>' +
-		'<div class="pay_mix" hidden><label class="acc_fl"><span>Қолма-қол қанша алдыңыз?</span><input class="acc_inp pay_cash" type="tel" inputmode="numeric" placeholder="0"></label><div class="pay_kaspi">Kaspi: <b>0 тг</b></div></div>' +
+		'<div class="acc_drw_grab"></div><div class="acc_drw_hd"><h4>' + w('js:order', 'Тапсырыс') + ' <span class="pay_num"></span></h4><div class="btn btn_cl pay_close" title="' + w('Close', 'Жабу') + '"><i class="far fa-times"></i></div></div>' +
+		'<div class="pay_sum"><span>' + w('js:collect_from_client', 'Клиенттен алу керек') + '</span><b class="pay_rest"></b></div>' +
+		'<div class="pay_lbl">' + w('js:how_paid', 'Немен алдыңыз?') + '</div>' +
+		'<div class="pay_ms"><div class="pay_m" data-m="cash"><i class="far fa-money-bill-wave"></i><span>' + w('Cash', 'Қолма-қол') + '</span></div><div class="pay_m" data-m="kaspi"><i class="far fa-mobile-alt"></i><span>Kaspi</span></div><div class="pay_m" data-m="mix"><i class="far fa-random"></i><span>' + w('Mixed', 'Аралас') + '</span></div></div>' +
+		'<div class="pay_mix" hidden><label class="acc_fl"><span>' + w('js:how_much_cash', 'Қолма-қол қанша алдыңыз?') + '</span><input class="acc_inp pay_cash" type="tel" inputmode="numeric" placeholder="0"></label><div class="pay_kaspi">Kaspi: <b>0 тг</b></div></div>' +
 		'<div class="acc_msg pay_msg"></div>' +
-		'<button class="btn acc_save pay_ok" type="button"><i class="far fa-check"></i><span>Тапсырдым</span></button>' +
+		'<button class="btn acc_save pay_ok" type="button"><i class="far fa-check"></i><span>' + w('Delivered it', 'Тапсырдым') + '</span></button>' +
 		'</div></div>')
 	var cur = null, method = '', rest = 0
 	function open(btn) {
@@ -195,7 +195,7 @@ $('html').on('change', '.on_route_return', function () {
 		b.addClass('btn_wait')
 		$.ajax({ url: '/orders/get.php?check', type: 'POST', dataType: 'html', data: { id: b.attr('data-id') },
 			success: function (d) {
-				if ($.trim(d) != 'yes') { alert('Сақталмады, бетті жаңартып көріңіз'); return }
+				if ($.trim(d) != 'yes') { alert(w('js:reload_retry', 'Сақталмады, бетті жаңартып көріңіз')); return }
 				if ($('.ord_page').length) location.href = '/orders/'
 				else b.parents('.uc_ui').slideUp(200, function () { $(this).remove() })
 			},
@@ -211,7 +211,7 @@ $('html').on('change', '.on_route_return', function () {
 	sh.on('input', '.pay_cash', mix_upd)
 	sh.on('click', '.pay_ok', function () {
 		var ok = $(this), msg = sh.find('.pay_msg')
-		if (rest > 0 && !method) { msg.addClass('acc_msg_err').text('Немен алғаныңызды таңдаңыз'); return }
+		if (rest > 0 && !method) { msg.addClass('acc_msg_err').text(w('js:choose_method', 'Немен алғаныңызды таңдаңыз')); return }
 		if (ok.hasClass('btn_wait')) return
 		ok.addClass('btn_wait')
 		$.ajax({ url: '/orders/get.php?check', type: 'POST', dataType: 'html',
@@ -221,9 +221,9 @@ $('html').on('change', '.on_route_return', function () {
 					close()
 					if ($('.ord_page').length) location.href = '/orders/'
 					else cur.parents('.uc_ui').slideUp(200, function () { $(this).remove() })
-				} else msg.addClass('acc_msg_err').text($.trim(d) == 'method' ? 'Немен алғаныңызды таңдаңыз' : 'Сақталмады, бетті жаңартып көріңіз')
+				} else msg.addClass('acc_msg_err').text($.trim(d) == 'method' ? w('js:choose_method', 'Немен алғаныңызды таңдаңыз') : w('js:reload_retry', 'Сақталмады, бетті жаңартып көріңіз'))
 			},
-			error: function () { msg.addClass('acc_msg_err').text('Байланыс жоқ, қайта көріңіз') },
+			error: function () { msg.addClass('acc_msg_err').text(w('js:no_net', 'Байланыс жоқ, қайта көріңіз')) },
 			complete: function () { ok.removeClass('btn_wait') }
 		})
 	})

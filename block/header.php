@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?=$lang?>" id="html" class="html">
+<html lang="<?=($ui_lang == 'kz' ? 'kk' : $ui_lang)?>" id="html" class="html">
 <head>
 
 	<? include "head.php"; ?>

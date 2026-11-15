@@ -10,7 +10,7 @@
 
 	// Сайттың баптаулары
 	$menu_name = 'users';
-	$site_set['utop_nm'] = t::w('Курьерлер', 'Курьеры');
+	$site_set['utop_nm'] = t::w('Couriers', 'Курьерлер');
 	$css = ['item', 'user2'];
 	$js = ['admin'];
 
@@ -24,16 +24,16 @@
 			<div class="bl_c">
 				<div class="bp_head_t">
 					<div>
-						<a class="bp_back" href="/acc/"><i class="far fa-arrow-left"></i> <?=t::w('Аккаунт', 'Аккаунт')?></a>
-						<h1 class="bp_head_h"><?=t::w('Курьерлер', 'Курьеры')?></h1>
+						<a class="bp_back" href="/acc/"><i class="far fa-arrow-left"></i> <?=t::w('Account', 'Аккаунт')?></a>
+						<h1 class="bp_head_h"><?=t::w('Couriers', 'Курьерлер')?></h1>
 					</div>
 					<div class="bp_cnt">
-						<span><?=t::w('Барлығы', 'Всего')?></span>
+						<span><?=t::w('Total count', 'Барлығы')?></span>
 						<b><?=$st_cnt?></b>
 					</div>
 				</div>
 				<div class="bp_tools">
-					<button class="bp_add add_user_btn" type="button"><i class="far fa-plus"></i> <span><?=t::w('Қосу', 'Добавить')?></span></button>
+					<button class="bp_add add_user_btn" type="button"><i class="far fa-plus"></i> <span><?=t::w('Add', 'Қосу')?></span></button>
 				</div>
 			</div>
 		</div>
@@ -51,12 +51,12 @@
 									<div class="bp_user_p fr_phone"><?=htmlspecialchars((string)$user_d['phone'])?></div>
 								</div>
 							</div>
-							<a class="bp_user_b bp_user_call" href="tel:8<?=htmlspecialchars((string)$user_d['phone'])?>" title="<?=t::h('Қоңырау', 'Звонок')?>"><i class="far fa-phone-alt"></i></a>
-							<div class="bp_user_b bp_user_del user_del" data-id="<?=$buy_d['id']?>" data-confirm="<?=t::h('Курьерді тізімнен өшіру керек пе?', 'Удалить курьера из списка?')?>" title="<?=t::h('Өшіру', 'Удалить')?>"><i class="far fa-trash-alt"></i></div>
+							<a class="bp_user_b bp_user_call" href="tel:8<?=htmlspecialchars((string)$user_d['phone'])?>" title="<?=t::h('Call', 'Қоңырау')?>"><i class="far fa-phone-alt"></i></a>
+							<div class="bp_user_b bp_user_del user_del" data-id="<?=$buy_d['id']?>" data-confirm="<?=t::h('Remove the courier from the list?', 'Курьерді тізімнен өшіру керек пе?')?>" title="<?=t::h('Delete', 'Өшіру')?>"><i class="far fa-trash-alt"></i></div>
 						</div>
 					<? endwhile ?>
 				<? else: ?>
-					<div class="ds_nr"><i class="fal fa-users"></i><p><?=t::w('Әзірге курьер жоқ', 'Курьеров пока нет')?></p></div>
+					<div class="ds_nr"><i class="fal fa-users"></i><p><?=t::w('No couriers yet', 'Әзірге курьер жоқ')?></p></div>
 				<? endif ?>
 			</div>
 		</div>
@@ -72,24 +72,24 @@
 		<div class="pop_bl_a add_user_back"></div>
 		<div class="pop_bl_c">
 			<div class="head_c">
-				<h4><?=t::w('Курьер қосу', 'Добавить курьера')?></h4>
+				<h4><?=t::w('Add courier', 'Курьер қосу')?></h4>
 				<div class="btn btn_dd add_user_back"><i class="fal fa-times"></i></div>
 			</div>
 			<div class="pop_bl_cl">
 				<div class="form_c">
 					<div class="form_im ">
-						<div class="form_span"><?=t::w('Аты', 'Имя')?>:</div>
+						<div class="form_span"><?=t::w('First name', 'Аты')?>:</div>
 						<input type="text" class="form_txt name" placeholder="" data-lenght="2">
 						<i class="fal fa-text form_icon"></i>
 					</div>
 					<div class="form_im ">
-						<div class="form_span"><?=t::w('Телефон нөмірі', 'Номер телефона')?>:</div>
+						<div class="form_span"><?=t::w('Phone number', 'Телефон нөмірі')?>:</div>
 						<input type="tel" class="form_txt phone fr_phone" placeholder="8 (700) 000-00-00" data-lenght="11">
 						<i class="fal fa-mobile form_icon"></i>
 					</div>
 					<div class="form_im form_im_bn">
 						<div class="btn add_user_send" data-cours-id="<?=$cours_id?>">
-							<span><?=t::w('Қосу', 'Добавить')?></span>
+							<span><?=t::w('Add', 'Қосу')?></span>
 						</div>
 					</div>
 				</div>
@@ -102,7 +102,7 @@
 		<div class="pop_bl_a edit_user_back"></div>
 		<div class="pop_bl_c">
 			<div class="head_c">
-				<h4><?=t::w('Курьерді өзгерту', 'Изменить курьера')?></h4>
+				<h4><?=t::w('Edit courier', 'Курьерді өзгерту')?></h4>
 				<div class="btn btn_dd edit_user_back"><i class="fal fa-times"></i></div>
 			</div>
 			<div class="pop_bl_cl edit_clp">

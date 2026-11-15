@@ -6,15 +6,15 @@ $(function () {
 	if (!$b.length) return
 	var home = $b.attr('data-home') || '/orders/'
 	var msg = {
-		none: 'Телефон немесе пароль қате',
-		wait: 'Кодты 1 минуттан кейін қайта сұраңыз',
-		limit: 'Тым көп әрекет. 15 минуттан кейін көріңіз',
-		fail: 'Кодты WhatsApp-қа жіберу мүмкін болмады. Әкімшіге хабарласыңыз',
-		wrong: 'Код қате',
-		expired: 'Кодтың уақыты өтті, жаңасын сұраңыз',
-		off: 'Парольді қалпына келтіру үшін әкімшіге хабарласыңыз',
-		phone: 'Телефонды толық жазыңыз',
-		short: 'Пароль кемінде 6 таңба болсын'
+		none: w('js:sign_none', 'Телефон немесе пароль қате'),
+		wait: w('js:sign_wait', 'Кодты 1 минуттан кейін қайта сұраңыз'),
+		limit: w('js:sign_limit', 'Тым көп әрекет. 15 минуттан кейін көріңіз'),
+		fail: w('js:sign_fail', 'Кодты WhatsApp-қа жіберу мүмкін болмады. Әкімшіге хабарласыңыз'),
+		wrong: w('js:sign_wrong', 'Код қате'),
+		expired: w('js:sign_expired', 'Кодтың уақыты өтті, жаңасын сұраңыз'),
+		off: w('js:sign_off', 'Парольді қалпына келтіру үшін әкімшіге хабарласыңыз'),
+		phone: w('js:sign_phone', 'Телефонды толық жазыңыз'),
+		short: w('js:sign_short', 'Пароль кемінде 6 таңба болсын')
 	}
 
 	function digits(s) { return String(s || '').replace(/\D/g, '') }
@@ -34,12 +34,12 @@ $(function () {
 				if (r.charAt(0) == '{') try { j = JSON.parse(r) } catch (e) {}
 				done(r, j)
 			},
-			error: function () { say('Байланыс қатесі', 'err') },
+			error: function () { say(w('js:net_error', 'Байланыс қатесі'), 'err') },
 			complete: function () { if ($btn) $btn.removeClass('sg_wait') }
 		})
 	}
 	function err(r) {
-		say(msg[r] || 'Қате', 'err')
+		say(msg[r] || w('js:error', 'Қате'), 'err')
 		if (r == 'expired' || r == 'limit') { if ($b.find('.sg_rcode:visible, .sg_rpass:visible').length) step('reset'); else step('login') }
 	}
 	function showCode(n, j) {
@@ -55,7 +55,7 @@ $(function () {
 	// 1. Кіру
 	$b.on('click', '.sg_go', function () {
 		var ph = phone10($b.find('.sg_phone').val()), ps = $b.find('.sg_pass').val()
-		if (ph.length < 10 || !ps) return say('Телефон мен парольді жазыңыз')
+		if (ph.length < 10 || !ps) return say(w('js:enter_phone_pass', 'Телефон мен парольді жазыңыз'))
 		post('sign', { phone: ph, password: ps }, $(this), function (r, j) {
 			if (r == 'yes') location.href = home
 			else if (j && j.st == 'code') showCode('code', j)
@@ -66,7 +66,7 @@ $(function () {
 	// 2. Кіру коды
 	$b.on('click', '.sg_code_go', function () {
 		var c = digits($b.find('.sg_code_in').val())
-		if (c.length != 4) return say('4 таңбалы кодты жазыңыз')
+		if (c.length != 4) return say(w('js:enter_code4', '4 таңбалы кодты жазыңыз'))
 		post('sign_code', { code: c, trust: $b.find('.sg_trust_in').is(':checked') ? 1 : 0 }, $(this), function (r) {
 			if (r == 'yes') location.href = home; else err(r)
 		})
@@ -76,7 +76,7 @@ $(function () {
 	$b.on('click', '.sg_resend', function () {
 		var key = $(this).attr('data-key')
 		post('sign_resend=' + key, {}, null, function (r, j) {
-			if (j && j.st == 'code') { showCode(key == 'reset' ? 'rcode' : 'code', j); say('Код қайта жіберілді', 'ok') }
+			if (j && j.st == 'code') { showCode(key == 'reset' ? 'rcode' : 'code', j); say(w('js:code_resent', 'Код қайта жіберілді'), 'ok') }
 			else err(r)
 		})
 	})
@@ -98,7 +98,7 @@ $(function () {
 	// 4. Код
 	$b.on('click', '.sg_rcode_go', function () {
 		var c = digits($b.find('.sg_rcode_in').val())
-		if (c.length != 4) return say('4 таңбалы кодты жазыңыз')
+		if (c.length != 4) return say(w('js:enter_code4', '4 таңбалы кодты жазыңыз'))
 		post('reset_code', { code: c }, $(this), function (r) {
 			if (r == 'yes') step('rpass'); else err(r)
 		})
@@ -108,9 +108,9 @@ $(function () {
 	$b.on('click', '.sg_rpass_go', function () {
 		var p1 = $b.find('.sg_np1').val(), p2 = $b.find('.sg_np2').val()
 		if (p1.length < 6) return say(msg.short)
-		if (p1 !== p2) return say('Парольдер сәйкес емес')
+		if (p1 !== p2) return say(w('js:pass_mismatch', 'Парольдер сәйкес емес'))
 		post('reset_pass', { pass: p1 }, $(this), function (r) {
-			if (r == 'yes') { say('Жаңа пароль сақталды', 'ok'); setTimeout(function () { location.href = home }, 600) }
+			if (r == 'yes') { say(w('js:pass_saved', 'Жаңа пароль сақталды'), 'ok'); setTimeout(function () { location.href = home }, 600) }
 			else err(r)
 		})
 	})

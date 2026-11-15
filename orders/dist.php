@@ -96,12 +96,12 @@
 <? include "../block/header.php"; ?>
 
 	<? $o_cnt = $orders ? mysqli_num_rows($orders) : 0;
-		$o_title = ['car' => t::w('Жеткізу', 'Доставка'), 'user' => t::w('Өзімен', 'Собой'), 'service' => t::w('Сервис', 'Сервис'), 'coffee' => t::w('Кафе', 'Кафе'), 'none' => t::w('Бас тарту', 'Отказ')][$menu_name]; ?>
+		$o_title = ['car' => t::w('Delivery', 'Жеткізу'), 'user' => t::w('Pickup', 'Өзімен'), 'service' => t::w('Service', 'Сервис'), 'coffee' => t::w('Cafe', 'Кафе'), 'none' => t::w('Refuse', 'Бас тарту')][$menu_name]; ?>
 	<div class="bp_page">
 
 	<? if (!empty($item_id)): ?>
 		<div class="bl_c ord_page">
-			<a class="ord_back" href="javascript:history.length > 1 ? history.back() : location.href='/orders/'"><i class="far fa-long-arrow-left"></i> <?=t::w('Тапсырыстар', 'Заказы')?></a>
+			<a class="ord_back" href="javascript:history.length > 1 ? history.back() : location.href='/orders/'"><i class="far fa-long-arrow-left"></i> <?=t::w('Orders', 'Тапсырыстар')?></a>
 		</div>
 	<? else: ?>
 		<div class="bp_head">
@@ -112,47 +112,47 @@
 						<h1 class="bp_head_h"><?=$o_title?></h1>
 					</div>
 					<div class="bp_cnt">
-						<span><?=t::w('Тапсырыс', 'Заказы')?></span>
+						<span><?=t::w('Orders count', 'Тапсырыс')?></span>
 						<b class="pp_number"><?=$o_cnt?></b>
 					</div>
 				</div>
 
 				<? if ($sort == 'new' || $sort == 'road' || $sort == 'history'): ?>
 					<div class="bp_tabs"><span class="bp_tabs_sl"></span>
-						<a class="bp_tab <?=($sort == 'new'?'bp_tab_act':'')?>" href="/orders/?sort=new"><?=t::w('Жаңа', 'Новые')?></a>
-						<a class="bp_tab <?=($sort == 'road'?'bp_tab_act':'')?>" href="/orders/?sort=road"><?=t::w('Жолда', 'В пути')?></a>
-						<a class="bp_tab <?=($sort == 'history'?'bp_tab_act':'')?>" href="/orders/?sort=history"><?=t::w('Аяқталған', 'Завершённые')?></a>
+						<a class="bp_tab <?=($sort == 'new'?'bp_tab_act':'')?>" href="/orders/?sort=new"><?=t::w('New', 'Жаңа')?></a>
+						<a class="bp_tab <?=($sort == 'road'?'bp_tab_act':'')?>" href="/orders/?sort=road"><?=t::w('On the way', 'Жолда')?></a>
+						<a class="bp_tab <?=($sort == 'history'?'bp_tab_act':'')?>" href="/orders/?sort=history"><?=t::w('Completed', 'Аяқталған')?></a>
 					</div>
 				<? elseif ($sort == 'myself' || $sort == 'myself_yes'): ?>
 					<div class="bp_tabs"><span class="bp_tabs_sl"></span>
-						<a class="bp_tab <?=($sort == 'myself'?'bp_tab_act':'')?>" href="/orders/?sort=myself"><?=t::w('Жаңа', 'Новые')?></a>
-						<a class="bp_tab <?=($sort == 'myself_yes'?'bp_tab_act':'')?>" href="/orders/?sort=myself_yes"><?=t::w('Тапсырылған', 'Выданные')?></a>
+						<a class="bp_tab <?=($sort == 'myself'?'bp_tab_act':'')?>" href="/orders/?sort=myself"><?=t::w('New', 'Жаңа')?></a>
+						<a class="bp_tab <?=($sort == 'myself_yes'?'bp_tab_act':'')?>" href="/orders/?sort=myself_yes"><?=t::w('Picked up', 'Тапсырылған')?></a>
 					</div>
 				<? elseif ($sort == 'service' || $sort == 'service_yes'): ?>
 					<div class="bp_tabs"><span class="bp_tabs_sl"></span>
-						<a class="bp_tab <?=($sort == 'service'?'bp_tab_act':'')?>" href="/orders/?sort=service"><?=t::w('Жаңа', 'Новые')?></a>
-						<a class="bp_tab <?=($sort == 'service_yes'?'bp_tab_act':'')?>" href="/orders/?sort=service_yes"><?=t::w('Берілген', 'Выданные')?></a>
+						<a class="bp_tab <?=($sort == 'service'?'bp_tab_act':'')?>" href="/orders/?sort=service"><?=t::w('New', 'Жаңа')?></a>
+						<a class="bp_tab <?=($sort == 'service_yes'?'bp_tab_act':'')?>" href="/orders/?sort=service_yes"><?=t::w('Handed over', 'Берілген')?></a>
 					</div>
 				<? endif ?>
 
 				<? if ($sort == 'road' || $sort == 'history'): ?>
-					<? $flt_nm = t::w('Барлық курьерлер', 'Все курьеры'); $flt_list = [];
+					<? $flt_nm = t::w('All couriers', 'Барлық курьерлер'); $flt_list = [];
 						$staff = db::query("select * from company_staff where positions_id = 6 and company_id = '$company'");
 						while ($staff_d = mysqli_fetch_assoc($staff)) { $su = fun::user($staff_d['user_id']); if (!$su) continue; $flt_list[(int)$staff_d['user_id']] = (string)$su['name']; if (@$сourier_id == $staff_d['user_id']) $flt_nm = $su['name']; } ?>
 					<div class="bp_pick bp_pick_flt on_pick_flt<?=(@$сourier_id != '' ? ' bp_flt_on' : '')?>">
 						<span class="bp_flt_ic"><i class="far fa-user"></i></span>
-						<span class="bp_flt_t"><small><?=t::w('Курьер бойынша', 'По курьеру')?></small><b><?=htmlspecialchars($flt_nm)?></b></span>
+						<span class="bp_flt_t"><small><?=t::w('By courier', 'Курьер бойынша')?></small><b><?=htmlspecialchars($flt_nm)?></b></span>
 						<i class="far fa-chevron-down bp_flt_ar"></i>
 					</div>
 					<div class="bp_dr bp_flt_sh">
 						<div class="bp_dr_bg"></div>
 						<div class="bp_dr_c">
 							<div class="bp_dr_grab"></div>
-							<div class="bp_sh_h"><?=t::w('Курьер бойынша', 'По курьеру')?> <span class="bp_dr_x"><i class="far fa-times"></i></span></div>
+							<div class="bp_sh_h"><?=t::w('By courier', 'Курьер бойынша')?> <span class="bp_dr_x"><i class="far fa-times"></i></span></div>
 							<div class="bp_list">
 								<a class="bp_li <?=(@$сourier_id == '' ? 'bp_li_act' : '')?>" href="/orders/?sort=<?=$sort?>">
 									<span class="bp_li_ic"><i class="far fa-users"></i></span>
-									<span class="bp_li_t"><?=t::w('Барлық курьерлер', 'Все курьеры')?></span>
+									<span class="bp_li_t"><?=t::w('All couriers', 'Барлық курьерлер')?></span>
 									<i class="far fa-check bp_li_ok"></i>
 								</a>
 								<? foreach ($flt_list as $fid => $fnm): ?>
@@ -188,20 +188,20 @@
 										<div class="uc_uil2_nmb"><?=htmlspecialchars((string)@$branch_d['code'])?><?=$buy_d['number']?></div>
 										<div class="uc_uil2_date">
 											<? $st_id = (int)$buy_d['order_status'];
-												$st_nm = [1 => t::w('Жаңа', 'Новый'), 8 => t::w('Дайындалуда', 'Готовится'), 2 => t::w('Дайын', 'Готов'), 11 => t::w('Курьер тағайындалды', 'Курьер назначен'), 3 => t::w('Жолда', 'В пути'), 9 => t::w('Столда', 'На столе'), 4 => t::w('Аяқталды', 'Завершён'), 5 => t::w('Бас тарту', 'Отказ'), 6 => t::w('Алғанда бас тарту', 'Отказ при получении'), 10 => t::w('Сыртта бас тарту', 'Отказ вне')]; ?>
+												$st_nm = [1 => t::st(1), 8 => t::st(8), 2 => t::st(2), 11 => t::st(11), 3 => t::st(3), 9 => t::st(9), 4 => t::st(4), 5 => t::st(5), 6 => t::st(6), 10 => t::st(10)]; ?>
 											<div class="uc_uil2_date1">
 												<? if (isset($st_nm[$st_id]) && $st_id != 11): // «Курьер тағайындалды» белгісі шықпайды, курьер аты төменде ?><span class="bp_st bp_st<?=$st_id?>"><?=$st_nm[$st_id]?></span><? endif ?>
 											</div>
-											<div class="bp_tm"><b class="bp_time"><?=date("H:i", strtotime($buy_d['ins_dt']))?></b><i class="far fa-history bp_hist_ic on_hist" data-id="<?=$buy_d['id']?>" data-nm="<?=htmlspecialchars((string)@$branch_d['code'].$buy_d['number'])?>" title="<?=t::h('Статус тарихы', 'История статусов')?>"></i><? if ($buy_d['preorder_dt']): ?> <b class="bp_pre"><i class="far fa-bell"></i> <?=htmlspecialchars($buy_d['preorder_dt'])?></b><? endif ?></div>
+											<div class="bp_tm"><b class="bp_time"><?=date("H:i", strtotime($buy_d['ins_dt']))?></b><i class="far fa-history bp_hist_ic on_hist" data-id="<?=$buy_d['id']?>" data-nm="<?=htmlspecialchars((string)@$branch_d['code'].$buy_d['number'])?>" title="<?=t::h('Status history', 'Статус тарихы')?>"></i><? if ($buy_d['preorder_dt']): ?> <b class="bp_pre"><i class="far fa-bell"></i> <?=htmlspecialchars($buy_d['preorder_dt'])?></b><? endif ?></div>
 										</div>
 										<? if ($sort == 'coffee' && in_array((int)$buy_d['order_status'], [1, 8, 2])): // Кафе: клиентке берілді → Столда ?>
 											<div class="uc_uil2_chek">
-												<div class="btn btn_cl on_table" data-id="<?=$buy_d['id']?>"><i class="far fa-utensils"></i> <?=t::w('Столда', 'На столе')?></div>
+												<div class="btn btn_cl on_table" data-id="<?=$buy_d['id']?>"><i class="far fa-utensils"></i> <?=t::w('At the table', 'Столда')?></div>
 											</div>
 										<? endif ?>
 										<? if (in_array((int)$buy_d['order_status'], [1, 8, 2]) && ($sort == 'myself' || $sort == 'service')): // Собой: клиент алды → Аяқталды ?>
 											<div class="uc_uil2_chek">
-												<div class="btn btn_cl on_check" data-id="<?=$buy_d['id']?>"><i class="far fa-check"></i> <?=t::w('Берілді', 'Выдан')?></div>
+												<div class="btn btn_cl on_check" data-id="<?=$buy_d['id']?>"><i class="far fa-check"></i> <?=t::w('Hand over', 'Берілді')?></div>
 											</div>
 										<? endif ?>
 									</div>
@@ -209,18 +209,18 @@
 										$cr_nm = $buy_d['сourier_id'] ? (string)@$сourier_d['name'] : '';
 										$cr_can = in_array((int)$buy_d['order_status'], [1, 8, 2, 11]); ?>
 										<div class="or_courier<?=($cr_can ? '' : ' cr_dis')?>">
-											<div class="or_courier_l"><i class="far fa-motorcycle"></i><span><?=t::w('Курьер', 'Курьер')?></span></div>
-											<div class="cr_btn<?=($cr_can ? ' on_pick_staff' : '')?>" data-order-id="<?=$buy_d['id']?>" data-cur="<?=(int)$buy_d['сourier_id']?>"<?=((int)$buy_d['order_status'] == 3 ? ' title="'.t::h('Курьер жолда, ауыстыруға болмайды', 'Курьер в пути, сменить нельзя').'"' : '')?>>
-												<b><?=($cr_nm !== '' ? htmlspecialchars($cr_nm) : t::w('Таңдау', 'Выбрать'))?></b>
+											<div class="or_courier_l"><i class="far fa-motorcycle"></i><span><?=t::w('Courier', 'Курьер')?></span></div>
+											<div class="cr_btn<?=($cr_can ? ' on_pick_staff' : '')?>" data-order-id="<?=$buy_d['id']?>" data-cur="<?=(int)$buy_d['сourier_id']?>"<?=((int)$buy_d['order_status'] == 3 ? ' title="'.t::h('Courier is on the way, cannot change', 'Курьер жолда, ауыстыруға болмайды').'"' : '')?>>
+												<b><?=($cr_nm !== '' ? htmlspecialchars($cr_nm) : t::w('Choose', 'Таңдау'))?></b>
 												<i class="far <?=($cr_can ? 'fa-chevron-down' : 'fa-lock')?>"></i>
 											</div>
 										</div>
 									<? endif ?>
 									<div class="uc_uil2_raz">
 										<div class="uc_uil2_trt">
-											<div class="uc_uil2_trt1"><?=t::w('Атауы', 'Название')?></div>
-											<div class="uc_uil2_trt2"><?=t::w('Саны', 'Кол-во')?></div>
-											<div class="uc_uil2_trt3"><?=t::w('Бағасы', 'Сумма')?></div>
+											<div class="uc_uil2_trt1"><?=t::w('Name', 'Атауы')?></div>
+											<div class="uc_uil2_trt2"><?=t::w('Qty', 'Саны')?></div>
+											<div class="uc_uil2_trt3"><?=t::w('Price', 'Бағасы')?></div>
 										</div>
 										<div class="uc_uil2_trc">
 
@@ -239,19 +239,19 @@
 													?>
 													<div class="uc_uil2_trt<?=($it_fold && $number > 2 ? ' bp_more_i' : '')?>">
 														<div class="uc_uil2_trt1"><?=$number?>. <?=$product_d['name_ru']?></div>
-														<div class="uc_uil2_trt2"><?=$sel_d['quantity']?> шт</div>
+														<div class="uc_uil2_trt2"><?=$sel_d['quantity']?> <?=t::w('pcs', 'шт')?></div>
 														<!-- <div class=""><?=$sel_d['price']?></div> -->
 														<div class="uc_uil2_trt3 fr_price"><?=$sum?></div>
 													</div>
 												<? endwhile ?>
 												<? if ($it_fold): ?>
-													<div class="bp_more on_more" data-more="+<?=$it_cnt - 2?> <?=t::h('тағы', 'ещё')?>" data-less="<?=t::h('Жасыру', 'Скрыть')?>"><span>+<?=$it_cnt - 2?> <?=t::w('тағы', 'ещё')?></span><i class="far fa-chevron-down"></i></div>
+													<div class="bp_more on_more" data-more="+<?=$it_cnt - 2?> <?=t::h('more', 'тағы')?>" data-less="<?=t::h('Hide', 'Жасыру')?>"><span>+<?=$it_cnt - 2?> <?=t::w('more', 'тағы')?></span><i class="far fa-chevron-down"></i></div>
 												<? endif ?>
 											<? endif ?>
 											
 											<? if ($ot == 1): ?>
 											<div class="uc_uil2_trt bp_tr_dl">
-												<div class="uc_uil2_trt1"><?=t::w('Жеткізу', 'Доставка')?></div>
+												<div class="uc_uil2_trt1"><?=t::w('Delivery fee', 'Жеткізу')?></div>
 												<div class="uc_uil2_trt3 fr_price"><?=$buy_d['pay_delivery']?></div>
 											</div>
 											<? endif ?>
@@ -264,22 +264,22 @@
 											<? endif ?>
 										</div>
 										<div class="uc_uil2_trb">
-											<div class="uc_uil2_trt1"><?=t::w('Жалпы', 'Итого')?></div>
+											<div class="uc_uil2_trt1"><?=t::w('Total', 'Жалпы')?></div>
 											<div class="uc_uil2_trt2"></div>
 											<div class="uc_uil2_trt3 fr_price"><?=$buy_d['total']?></div>
 										</div>
-										<? $pm_names = ['transfer' => t::w('Аударым', 'Перевод'), 'qr' => 'Kaspi QR', 'cash' => t::w('Қолма-қол', 'Наличные'), 'red' => 'Red', 'mix' => t::w('Аралас', 'Смешанная'), 'mixed' => t::w('Аралас', 'Смешанная'), 'unpaid' => t::w('Төленбеген', 'Не оплачен')]; ?>
+										<? $pm_names = ['transfer' => t::w('Transfer', 'Аударым'), 'qr' => 'Kaspi QR', 'cash' => t::w('Cash', 'Қолма-қол'), 'red' => 'Red', 'mix' => t::w('Mixed', 'Аралас'), 'mixed' => t::w('Mixed', 'Аралас'), 'unpaid' => t::w('Unpaid', 'Төленбеген')]; ?>
 										<? if ($ot == 1 || $ot == 2): // Кассадағыдай: предоплата және қалған нал сома ?>
 										<? // Предоплата pay_prepay-де (кез келген түрмен); prepay_method бос болса — ескі тапсырыс, сомасы pay_qr-да (кассадағыдай)
 											$pre_sum = (string)@$buy_d['prepay_method'] !== '' ? (int)$buy_d['pay_prepay'] : (int)$buy_d['pay_qr']; ?>
 										<div class="uc_uil2_trc">
 											<div class="uc_uil2_trt">
-												<div class="uc_uil2_trt1"><?=t::w('Алдын ала төлем', 'Предоплата')?><?=(@$pm_names[$buy_d['prepay_method']] ? ' ('.$pm_names[$buy_d['prepay_method']].')' : '')?></div>
+												<div class="uc_uil2_trt1"><?=t::w('Prepayment', 'Алдын ала төлем')?><?=(@$pm_names[$buy_d['prepay_method']] ? ' ('.$pm_names[$buy_d['prepay_method']].')' : '')?></div>
 												<div class="uc_uil2_trt2">-</div>
 												<div class="uc_uil2_trt3 fr_price"><?=$pre_sum?></div>
 											</div>
 											<div class="uc_uil2_trt">
-												<div class="uc_uil2_trt1"><b><?=($ot == 1 ? t::w('Курьерге (нал)', 'Курьеру (нал)') : t::w('Алғанда төлейді', 'Оплата при получении'))?></b></div>
+												<div class="uc_uil2_trt1"><b><?=($ot == 1 ? t::w('To courier (cash)', 'Курьерге (нал)') : t::w('On pickup', 'Алғанда төлейді'))?></b></div>
 												<div class="uc_uil2_trt2"></div>
 												<div class="uc_uil2_trt3 fr_price"><b><?=$buy_d['pay_cash']?></b></div>
 											</div>
@@ -287,7 +287,7 @@
 										<? elseif ($ot == 4 && @$buy_d['payment_method']): ?>
 										<div class="uc_uil2_trc">
 											<div class="uc_uil2_trt">
-												<div class="uc_uil2_trt1"><?=t::w('Төлем', 'Оплата')?></div>
+												<div class="uc_uil2_trt1"><?=t::w('Payment', 'Төлем')?></div>
 												<div class="uc_uil2_trt2"></div>
 												<div class="uc_uil2_trt3"><?=htmlspecialchars(@$pm_names[$buy_d['payment_method']] ?: $buy_d['payment_method'])?></div>
 											</div>
@@ -298,12 +298,12 @@
 									<? if (in_array((int)$buy_d['order_status'], [5, 6, 10]) && ($rf_r !== '' || $rf_k > 0)): // Отказ: себебі және бізде қалған сома ?>
 										<div class="uc_uil2_raz">
 											<div class="uc_uil2_mi">
-												<div class="uc_uil2_mi1"><?=t::w('Себебі', 'Причина')?>:</div>
+												<div class="uc_uil2_mi1"><?=t::w('Reason', 'Себебі')?>:</div>
 												<div class="uc_uil2_mi2"><?=($rf_r !== '' ? htmlspecialchars($rf_r) : '—')?></div>
 											</div>
 											<? if ($rf_k > 0): ?>
 												<div class="uc_uil2_mi">
-													<div class="uc_uil2_mi1"><?=t::w('Бізде қалды', 'Осталось у нас')?>:</div>
+													<div class="uc_uil2_mi1"><?=t::w('Kept by us', 'Бізде қалды')?>:</div>
 													<div class="uc_uil2_mi2 fr_price"><?=$rf_k?></div>
 												</div>
 											<? endif ?>
@@ -312,11 +312,11 @@
 									<? if ($buy_d['address']): ?>
 										<div class="uc_uil2_raz">
 											<div class="uc_uil2_mi">
-												<div class="uc_uil2_mi1"><?=t::w('Оператор', 'Оператор')?>:</div>
+												<div class="uc_uil2_mi1"><?=t::w('Operator', 'Оператор')?>:</div>
 												<div class="uc_uil2_mi2"><?=(fun::user($buy_d['user_id']))['name']?></div>
 											</div>
 											<div class="uc_uil2_mi">
-												<div class="uc_uil2_mi1"><?=t::w('Мекенжай', 'Адрес')?>:</div>
+												<div class="uc_uil2_mi1"><?=t::w('Address', 'Мекенжай')?>:</div>
 												<div class="uc_uil2_mi2"><?=htmlspecialchars($buy_d['address'])?></div>
 											</div>
 											<? $fa = trim((string)@$buy_d['floor_apt']); if ($fa !== ''): ?>
@@ -324,7 +324,7 @@
 											<? endif ?>
 											<? if ($menu_name == 'car' && $sort != 'history'): ?>
 												<div class="uc_uil2_mib uc_uil2_mib1">
-													<a class="btn btn_map" href="https://2gis.kz/<?=rawurlencode(trim((string)@$company_d['city']) ?: 'shymkent')?>/search/<?=rawurlencode($buy_d['address'])?>" target="_blank" rel="noopener"><i class="far fa-map-marked-alt"></i><span><?=t::w('Картадан ашу', 'Открыть на карте')?></span><small>2GIS</small></a>
+													<a class="btn btn_map" href="https://2gis.kz/<?=rawurlencode(trim((string)@$company_d['city']) ?: 'shymkent')?>/search/<?=rawurlencode($buy_d['address'])?>" target="_blank" rel="noopener"><i class="far fa-map-marked-alt"></i><span><?=t::w('Open on map', 'Картадан ашу')?></span><small>2GIS</small></a>
 												</div>
 											<? endif ?>
 										</div>
@@ -334,33 +334,33 @@
 
 									<? if (empty($item_id)): ?>
 									<div class="uc_uil2_raz uc_uil2_mib uc_uil2_mib1">
-										<a class="btn btn_cl" href="/orders/item.php?id=<?=$buy_d['id']?>"><?=t::w('Толығырақ', 'Подробнее')?></a>
+										<a class="btn btn_cl" href="/orders/item.php?id=<?=$buy_d['id']?>"><?=t::w('Details', 'Толығырақ')?></a>
 									</div>
 									<? else: require_once __DIR__.'/hist.php'; // «Толығырақ»: толық мәлімет
 										$i_rows = [
-											t::w('Түрі', 'Тип') => [1 => t::w('Жеткізу', 'Доставка'), 2 => t::w('Өзімен', 'Собой'), 3 => t::w('Сервис', 'Сервис'), 4 => t::w('Кафе', 'Кафе')][(int)$buy_d['order_type']] ?? '',
-											t::w('Точка', 'Точка') => (string)@$branch_d['name'],
-											t::w('Клиент нөмірі', 'Номер клиента') => $buy_d['phone'] ? '8 '.preg_replace('/^(\d{3})(\d{3})(\d{2})(\d{2})$/', '($1) $2-$3-$4', preg_replace('/\D/', '', $buy_d['phone'])) : '',
-											t::w('Предзаказ', 'Предзаказ') => (string)$buy_d['preorder_dt'],
-											t::w('Төлем', 'Оплата') => (string)(@$pm_names[$buy_d['payment_method']] ?: $buy_d['payment_method']),
-											t::w('Қосымша', 'Примечание') => trim(strip_tags((string)$buy_d['additional'])),
-											t::w('Пікір', 'Комментарий') => trim(strip_tags((string)$buy_d['comment'])),
-											t::w('Жасалды', 'Создан') => date('H:i d.m.Y', strtotime($buy_d['ins_dt'])),
+											t::w('Type', 'Түрі') => [1 => t::w('Delivery', 'Жеткізу'), 2 => t::w('Pickup', 'Өзімен'), 3 => t::w('Service', 'Сервис'), 4 => t::w('Cafe', 'Кафе')][(int)$buy_d['order_type']] ?? '',
+											t::w('Branch', 'Точка') => (string)@$branch_d['name'],
+											t::w('Client phone', 'Клиент нөмірі') => $buy_d['phone'] ? '8 '.preg_replace('/^(\d{3})(\d{3})(\d{2})(\d{2})$/', '($1) $2-$3-$4', preg_replace('/\D/', '', $buy_d['phone'])) : '',
+											t::w('Preorder', 'Предзаказ') => (string)$buy_d['preorder_dt'],
+											t::w('Payment', 'Төлем') => (string)(@$pm_names[$buy_d['payment_method']] ?: $buy_d['payment_method']),
+											t::w('Notes', 'Қосымша') => trim(strip_tags((string)$buy_d['additional'])),
+											t::w('Comment', 'Пікір') => trim(strip_tags((string)$buy_d['comment'])),
+											t::w('Created', 'Жасалды') => date('H:i d.m.Y', strtotime($buy_d['ins_dt'])),
 										]; ?>
 									<div class="uc_uil2_raz">
-										<div class="ord_box_h"><?=t::w('Толық мәлімет', 'Полная информация')?></div>
+										<div class="ord_box_h"><?=t::w('Full details', 'Толық мәлімет')?></div>
 										<? foreach ($i_rows as $ik => $iv): if ($iv === '' || $iv === null) continue; ?>
 											<div class="uc_uil2_mi"><div class="uc_uil2_mi1"><?=$ik?>:</div><div class="uc_uil2_mi2"><?=htmlspecialchars($iv)?></div></div>
 										<? endforeach ?>
 										<? $ph10 = substr(preg_replace('/\D/', '', (string)$buy_d['phone']), -10); if (strlen($ph10) == 10): ?>
 											<div class="uc_uil2_mib">
-												<a class="btn btn_phone" href="tel:8<?=$ph10?>"><i class="far fa-phone-alt"></i> <?=t::w('Қоңырау', 'Звонок')?></a>
+												<a class="btn btn_phone" href="tel:8<?=$ph10?>"><i class="far fa-phone-alt"></i> <?=t::w('Call', 'Қоңырау')?></a>
 												<a class="btn btn_whatsapp" href="https://wa.me/7<?=$ph10?>" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
 											</div>
 										<? endif ?>
 									</div>
 									<div class="uc_uil2_raz">
-										<div class="ord_box_h"><?=t::w('Тарих', 'История')?></div>
+										<div class="ord_box_h"><?=t::w('History', 'Тарих')?></div>
 										<?=dist_hist_html($buy_d)?>
 									</div>
 									<? endif ?>
@@ -375,8 +375,8 @@
 							?>
 
 						<? endwhile ?>
-					<? else: ?> <div class="ds_nr"><i class="fal fa-inbox"></i><p><?=t::w('Тапсырыс жоқ', 'Заказов нет')?></p></div> <? endif ?>
-				<? else: ?> <div class="ds_nr"><i class="fal fa-inbox"></i><p><?=t::w('Тапсырыс жоқ', 'Заказов нет')?></p></div> <? endif ?>
+					<? else: ?> <div class="ds_nr"><i class="fal fa-inbox"></i><p><?=t::w('No orders', 'Тапсырыс жоқ')?></p></div> <? endif ?>
+				<? else: ?> <div class="ds_nr"><i class="fal fa-inbox"></i><p><?=t::w('No orders', 'Тапсырыс жоқ')?></p></div> <? endif ?>
 
 			</div>
 
@@ -392,11 +392,11 @@
 		<div class="bp_dr_bg"></div>
 		<div class="bp_dr_c">
 			<div class="bp_dr_grab"></div>
-			<div class="bp_sh_h"><?=t::w('Курьер таңдау', 'Выбрать курьера')?> <span class="bp_dr_x"><i class="far fa-times"></i></span></div>
+			<div class="bp_sh_h"><?=t::w('Choose courier', 'Курьер таңдау')?> <span class="bp_dr_x"><i class="far fa-times"></i></span></div>
 			<div class="bp_list">
 				<div class="bp_li bp_staff_i bp_staff_off" data-id="off">
 					<span class="bp_li_ic"><i class="far fa-user-times"></i></span>
-					<span class="bp_li_t"><?=t::w('Курьерді алып тастау', 'Убрать курьера')?></span>
+					<span class="bp_li_t"><?=t::w('Remove courier', 'Курьерді алып тастау')?></span>
 				</div>
 				<? $staff = db::query("select * from company_staff where positions_id = 6 and company_id = '$company'"); ?>
 				<? while ($staff_d = mysqli_fetch_assoc($staff)): $staff_user_d = fun::user($staff_d['user_id']); if (!$staff_user_d) continue; ?>
@@ -415,7 +415,7 @@
 		<div class="bp_dr_bg"></div>
 		<div class="bp_dr_c">
 			<div class="bp_dr_grab"></div>
-			<div class="bp_sh_h"><span><?=t::w('Тарих', 'История')?> <b class="bp_hist_nm"></b></span> <span class="bp_dr_x"><i class="far fa-times"></i></span></div>
+			<div class="bp_sh_h"><span><?=t::w('History', 'Тарих')?> <b class="bp_hist_nm"></b></span> <span class="bp_dr_x"><i class="far fa-times"></i></span></div>
 			<div class="oh_list"></div>
 		</div>
 	</div>

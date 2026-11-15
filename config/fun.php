@@ -280,7 +280,7 @@
 			$h = '<div class="or_tm_r"><b class="or_time">'.date('H:i', $ts).'</b>';
 			if ($pre !== '') {
 				$pt = strtotime($pre);
-				$h .= '<span class="or_pre_tm" title="Предзаказ"><i class="far fa-stopwatch"></i>'.($pt ? date('H:i', $pt).(date('Y-m-d', $pt) != date('Y-m-d', $ts) ? '<small>'.date('d.m', $pt).'</small>' : '') : htmlspecialchars($pre)).'</span>';
+				$h .= '<span class="or_pre_tm" title="'.t::h('Preorder', 'Предзаказ').'"><i class="far fa-stopwatch"></i>'.($pt ? date('H:i', $pt).(date('Y-m-d', $pt) != date('Y-m-d', $ts) ? '<small>'.date('d.m', $pt).'</small>' : '') : htmlspecialchars($pre)).'</span>';
 			}
 			$h .= '</div><span class="or_date">'.date('d-m-Y', $ts).($branch_name !== '' ? ' · '.htmlspecialchars($branch_name) : '').'</span>';
 			return $h;
