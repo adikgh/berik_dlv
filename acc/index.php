@@ -6,7 +6,7 @@
 
 	// Сайттың баптаулары
 	$menu_name = 'acc';
-	$site_set['utop_nm'] = t::w('Personal data', 'Жеке деректер');
+	$site_set['utop_nm'] = t::w('More menu', 'Тағы');
 	$css = ['acc'];
 	$js = ['admin'];
 	if (empty($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(16));

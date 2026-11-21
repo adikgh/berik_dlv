@@ -1,5 +1,5 @@
 <? if ($site_set['menu']): ?>
-<? if ($dist): // Раздача: ең көбі 4 батырма — 3 тапсырыс түрі + «Тағы» (қалған түрлер, Оплата, Аккаунт) ?>
+<? if ($dist): // Раздача: ең көбі 4 батырма — 3 тапсырыс түрі + «Тағы». «Тағы» = /acc/ беті: аккаунт + $pm_more (қалған түрлер, Оплата) ?>
 	<? // Тапсырыс түрлері базадан (retail_orders_type), компанияда өшірулі түр (company.delivery / yourself / service / coffee) шықпайды
 		$pm_types = [
 			'delivery' => ['sort' => 'new', 'menu' => 'car', 'ico' => 'fa-car', 'key' => 'Delivery', 'kz' => 'Жеткізу'],
@@ -27,26 +27,10 @@
 					<span><?=$p[3]?></span>
 				</a>
 			<? endforeach ?>
-			<a class="pmenu_i pmenu_acc <?=($pm_in_more ? 'pmenu_i_act' : '')?>" href="/acc/">
+			<a class="pmenu_i <?=($pm_in_more ? 'pmenu_i_act' : '')?>" href="/acc/">
 				<i class="far fa-th-large"></i>
 				<span><?=t::w('More menu', 'Тағы')?></span>
 			</a>
-		</div>
-	</div>
-	<div class="bp_dr bp_acc_sh">
-		<div class="bp_dr_bg"></div>
-		<div class="bp_dr_c">
-			<div class="bp_dr_grab"></div>
-			<div class="bp_sh_h"><span><?=t::w('More menu', 'Тағы')?></span> <span class="bp_dr_x"><i class="far fa-times"></i></span></div>
-			<div class="bp_list">
-				<? foreach ($pm_more as $p): ?>
-					<a class="bp_li <?=($p[0] ? 'bp_li_act' : '')?>" href="<?=$p[1]?>">
-						<span class="bp_li_ic"><i class="far <?=$p[2]?>"></i></span>
-						<span class="bp_li_t"><?=$p[3]?></span>
-						<i class="far fa-chevron-right bp_li_ar"></i>
-					</a>
-				<? endforeach ?>
-			</div>
 		</div>
 	</div>
 <? else: // Доставка (курьер) ?>
@@ -65,8 +49,8 @@
 			<? endif ?>
 
 			<a class="pmenu_i <?=($menu_name=='acc'?'pmenu_i_act':'')?>" href="/acc/">
-				<i class="far fa-user"></i>
-				<span><?=t::w('Account', 'Аккаунт')?></span>
+				<i class="far fa-th-large"></i>
+				<span><?=t::w('More menu', 'Тағы')?></span>
 			</a>
 		</div>
    </div>

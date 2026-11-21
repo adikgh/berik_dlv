@@ -6,7 +6,7 @@
 
 	// Сайттың баптаулары
 	$menu_name = 'acc';
-	$site_set['utop_nm'] = t::w('Personal data', 'Жеке деректер');
+	$site_set['utop_nm'] = t::w('More menu', 'Тағы');
 	$css = ['acc'];
 	$js = ['admin'];
 	$pos_nm = [1 => t::w('Creator', 'Создатель'), 2 => t::w('Director', 'Директор'), 3 => t::w('Manager', 'Басқарушы'), 8 => t::w('Dispatch', 'Раздача')];
@@ -38,6 +38,13 @@
 			</div>
 
 			<div class="bp_box bp_list">
+				<? foreach ($pm_more ?? [] as $p): if ($p[1] == '/acc/') continue; // мәзірдегі «Тағы» бөлімдері (block/menu.php) ?>
+					<a class="bp_li" href="<?=$p[1]?>">
+						<span class="bp_li_ic"><i class="far <?=$p[2]?>"></i></span>
+						<span class="bp_li_t"><?=$p[3]?></span>
+						<i class="far fa-chevron-right bp_li_ar"></i>
+					</a>
+				<? endforeach ?>
 				<a class="bp_li" href="/orders/?sort=none">
 					<span class="bp_li_ic"><i class="far fa-ban"></i></span>
 					<span class="bp_li_t"><?=t::w('Refusals', 'Бас тарту')?></span>

@@ -2,6 +2,7 @@
 // Курьер (dlv) мен Раздача (dist) сөздері: кілт => [kz, ru, en, uz, ky]. t::w() алдымен site_word кестесін қарайды,
 // жоқ болса осы жерден алады. Базаға да осы сөздер жазылған (_drafts/site_word_dlv_*.sql). Жаңа мәтін: кодта t::w('English key', 'Қазақша') + осында бір жол.
 return [
+	'More menu' => ['kz' => 'Тағы', 'ru' => 'Ещё', 'en' => 'More', 'uz' => 'Yana', 'ky' => 'Дагы'],
 	'Account' => ['kz' => 'Аккаунт', 'ru' => 'Аккаунт', 'en' => 'Account', 'uz' => 'Akkaunt', 'ky' => 'Аккаунт'],
 	'Prepayment' => ['kz' => 'Алдын ала төлем', 'ru' => 'Предоплата', 'en' => 'Prepayment', 'uz' => 'Oldindan to‘lov', 'ky' => 'Алдын ала төлөм'],
 	'On pickup' => ['kz' => 'Алғанда төлейді', 'ru' => 'Оплата при получении', 'en' => 'Pay on receipt', 'uz' => 'Olishda to‘laydi', 'ky' => 'Алууда төлөйт'],
