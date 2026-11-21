@@ -72,15 +72,15 @@ $(function () {
 
 	// Жеке деректер: попап ашу / жабу
 	function acc_drw(open) {
-		$('.acc_drw').toggleClass('acc_drw_act', open).attr('aria-hidden', open ? 'false' : 'true');
+		$('.acc_drw').not('.pw_drw').toggleClass('acc_drw_act', open).attr('aria-hidden', open ? 'false' : 'true');
 		$('body').toggleClass('acc_drw_lock', open);
 		if (open) { $('.acc_form .acc_msg').removeClass('acc_msg_ok acc_msg_err').text(''); setTimeout(function () { $('.acc_form [name=name]').trigger('focus') }, 260) }
 	}
 	$('.on_acc_toggle').on('click', function () { acc_drw(true) });
 	$('.on_acc_close').on('click', function () { acc_drw(false) });
-	$(document).on('keydown', function (e) { if (e.key == 'Escape' && $('.acc_drw_act').length) acc_drw(false) });
+	$(document).on('keydown', function (e) { if (e.key == 'Escape' && $('.acc_drw_act').length) { acc_drw(false); pw_drw(false) } });
 	var acc_err = { name: w('js:acc_name', 'Атыңызды жазыңыз'), phone: w('js:acc_phone', 'Телефон 10 цифр болуы керек: 7001234567'), phone_busy: w('js:phone_busy', 'Бұл телефон басқа қызметкерде тіркелген'), csrf: w('js:csrf', 'Бетті жаңартып, қайта көріңіз'), none: w('js:relogin', 'Қайта кіріңіз') };
-	$('.acc_form').on('submit', function (e) {
+	$('.acc_form').not('.pw_form').on('submit', function (e) {
 		e.preventDefault();
 		var f = $(this), btn = f.find('.acc_save'), msg = f.find('.acc_msg');
 		if (btn.hasClass('btn_wait')) return;
@@ -95,6 +95,30 @@ $(function () {
 					$('.up_name').text($.trim(f.find('[name=name]').val() + ' ' + f.find('[name=surname]').val()));
 					$('.up_phone').text(f.find('[name=phone]').val().replace(/\D/g, '').slice(-10));
 				} else msg.addClass('acc_msg_err').text(acc_err[d] || w('js:not_saved', 'Сақталмады, қайта көріңіз'));
+			},
+			error: function () { msg.addClass('acc_msg_err').text(w('js:no_net', 'Байланыс жоқ, қайта көріңіз')) },
+			complete: function () { btn.removeClass('btn_wait') }
+		});
+	});
+
+	// Құпиясөзді өзгерту (get.php?ubd_pass: кемі 6 таңба, 123456 емес)
+	function pw_drw(open) {
+		$('.pw_drw').toggleClass('acc_drw_act', open).attr('aria-hidden', open ? 'false' : 'true');
+		$('body').toggleClass('acc_drw_lock', open);
+		if (open) { $('.pw_form [name=pass]').val(''); $('.pw_form .acc_msg').removeClass('acc_msg_ok acc_msg_err').text(''); setTimeout(function () { $('.pw_form [name=pass]').trigger('focus') }, 260) }
+	}
+	$('.on_pw_open').on('click', function () { pw_drw(true) });
+	$('.on_pw_close').on('click', function () { pw_drw(false) });
+	$('.pw_form').on('submit', function (e) {
+		e.preventDefault();
+		var f = $(this), btn = f.find('.acc_save'), msg = f.find('.acc_msg');
+		if (btn.hasClass('btn_wait')) return;
+		btn.addClass('btn_wait'); msg.removeClass('acc_msg_ok acc_msg_err').text('');
+		$.ajax({ url: '/get.php?ubd_pass', type: 'POST', dataType: 'html', data: { pass: f.find('[name=pass]').val() },
+			success: function (d) {
+				d = $.trim(d);
+				if (d == 'yes') { msg.addClass('acc_msg_ok').text(w('js:saved', 'Сақталды')); setTimeout(function () { pw_drw(false) }, 700) }
+				else msg.addClass('acc_msg_err').text(d == 'short' ? w('js:pass_short', 'Кемі 6 таңба, 123456 болмасын') : (acc_err[d] || w('js:not_saved', 'Сақталмады, қайта көріңіз')));
 			},
 			error: function () { msg.addClass('acc_msg_err').text(w('js:no_net', 'Байланыс жоқ, қайта көріңіз')) },
 			complete: function () { btn.removeClass('btn_wait') }

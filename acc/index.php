@@ -39,6 +39,10 @@
 						<div class="menu_cin"><i class="fal fa-user-circle"></i></div>
 						<div class="menu_cih"><?=t::w('Personal data', 'Жеке деректер')?></div>
 					</div>
+					<div class="up_li on_pw_open">
+						<div class="menu_cin"><i class="fal fa-key"></i></div>
+						<div class="menu_cih"><?=t::w('Change password', 'Құпиясөзді өзгерту')?></div>
+					</div>
 
 					<? if ($super == 3 || $user_right['positions_id'] == 2 || $user_right['positions_id'] == 1): ?>
 						<a class="up_li" href="/users/">
@@ -154,6 +158,23 @@
 				<label class="acc_fl"><span><?=t::w('First name', 'Аты')?></span><input class="acc_inp" name="name" value="<?=e($user['name'])?>" maxlength="60" autocomplete="given-name" required></label>
 				<label class="acc_fl"><span><?=t::w('Surname', 'Тегі')?></span><input class="acc_inp" name="surname" value="<?=e($user['surname'])?>" maxlength="60" autocomplete="family-name"></label>
 				<label class="acc_fl"><span><?=t::w('Phone (label)', 'Телефон')?></span><input class="acc_inp fr_phone" name="phone" type="tel" inputmode="numeric" value="<?=e($user['phone'])?>" placeholder="8 (700) 000-00-00" autocomplete="tel" required></label>
+				<div class="acc_msg"></div>
+				<button class="btn acc_save" type="submit"><?=t::w('Save', 'Сақтау')?></button>
+			</form>
+		</div>
+	</div>
+
+	<!-- Құпиясөзді өзгерту -->
+	<div class="acc_drw pw_drw" aria-hidden="true">
+		<div class="acc_drw_a on_pw_close"></div>
+		<div class="acc_drw_c" role="dialog" aria-labelledby="pw_drw_t">
+			<div class="acc_drw_grab"></div>
+			<div class="acc_drw_hd">
+				<h4 id="pw_drw_t"><?=t::w('Change password', 'Құпиясөзді өзгерту')?></h4>
+				<div class="btn btn_cl on_pw_close" title="<?=t::h('Close', 'Жабу')?>"><i class="far fa-times"></i></div>
+			</div>
+			<form class="acc_form pw_form">
+				<label class="acc_fl"><span><?=t::w('New password', 'Жаңа құпиясөз')?></span><input class="acc_inp" name="pass" type="password" minlength="6" maxlength="60" autocomplete="new-password" required></label>
 				<div class="acc_msg"></div>
 				<button class="btn acc_save" type="submit"><?=t::w('Save', 'Сақтау')?></button>
 			</form>
