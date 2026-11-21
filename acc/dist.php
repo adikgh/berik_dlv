@@ -8,7 +8,8 @@
 	$menu_name = 'acc';
 	$site_set['utop_nm'] = t::w('More menu', 'Тағы');
 	$css = ['acc'];
-	$js = ['admin'];
+	$js = ['admin', 'prof'];
+	if (empty($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(16));
 	$pos_nm = [1 => t::w('Creator', 'Создатель'), 2 => t::w('Director', 'Директор'), 3 => t::w('Manager', 'Басқарушы'), 8 => t::w('Dispatch', 'Раздача')];
 ?>
 <? include "../block/header.php"; ?>
@@ -16,8 +17,14 @@
 	<div class="bp_page bp_acc">
 		<div class="bl_c">
 
-			<div class="bp_prof">
-				<div class="bp_prof_av lazy_img" <?=(@$user['img'] ? 'data-src="/assets/uploads/users/'.htmlspecialchars($user['img']).'"' : '')?>><? if (!@$user['img']): ?><?=htmlspecialchars(mb_strtoupper(mb_substr(trim((string)$user['name']), 0, 1)))?><? endif ?></div>
+			<div class="bp_prof prof_ed" data-csrf="<?=$_SESSION['csrf']?>" data-save="/get.php?acc_save" data-img="/get.php?acc_img"
+				data-e-name="<?=t::h('js:acc_name', 'Атыңызды жазыңыз')?>" data-e-save="<?=t::h('js:not_saved', 'Сақталмады, қайта көріңіз')?>"
+				data-e-net="<?=t::h('js:no_net', 'Байланыс жоқ, қайта көріңіз')?>" data-e-type="<?=t::h('js:img_type', 'Тек JPG, PNG немесе WEBP фото')?>" data-e-size="<?=t::h('js:img_size', 'Фото 8 МБ-тан аспауы керек')?>">
+				<label class="prof_av" title="<?=t::h('Change photo', 'Фотоны өзгерту')?>">
+					<div class="bp_prof_av lazy_img" <?=(@$user['img'] ? 'data-src="/assets/uploads/users/'.htmlspecialchars($user['img']).'"' : '')?>><? if (!@$user['img']): ?><?=htmlspecialchars(mb_strtoupper(mb_substr(trim((string)$user['name']), 0, 1)))?><? endif ?></div>
+					<span class="prof_av_b"><i class="far fa-camera"></i></span>
+					<input type="file" class="prof_img" accept="image/jpeg,image/png,image/webp">
+				</label>
 				<div class="bp_prof_t">
 					<div class="bp_prof_n"><?=htmlspecialchars(trim($user['name'].' '.$user['surname']))?></div>
 					<div class="bp_prof_p fr_phone"><?=htmlspecialchars((string)$user['phone'])?></div>
@@ -26,6 +33,7 @@
 						<? if (@$company_d['name']): ?><span><?=htmlspecialchars($company_d['name'])?></span><? endif ?>
 					</div>
 				</div>
+				<button class="prof_ed_btn" type="button" title="<?=t::h('Edit', 'Өзгерту')?>"><i class="far fa-pen"></i></button>
 			</div>
 
 			<div class="bp_box">
@@ -122,6 +130,22 @@
 	</div>
 
 <? include "../block/footer.php"; ?>
+
+	<!-- Профиль: аты-жөнін өзгерту -->
+	<div class="bp_dr prof_sh">
+		<div class="bp_dr_bg"></div>
+		<div class="bp_dr_c">
+			<div class="bp_dr_grab"></div>
+			<div class="bp_sh_h"><span><?=t::w('Personal data', 'Жеке деректер')?></span> <span class="bp_dr_x"><i class="far fa-times"></i></span></div>
+			<form class="prof_form">
+				<label><?=t::w('First name', 'Аты')?><input name="name" value="<?=htmlspecialchars((string)$user['name'])?>" maxlength="60" autocomplete="given-name" required></label>
+				<label><?=t::w('Surname', 'Тегі')?><input name="surname" value="<?=htmlspecialchars((string)$user['surname'])?>" maxlength="60" autocomplete="family-name"></label>
+				<input type="hidden" name="phone" value="<?=htmlspecialchars((string)$user['phone'])?>">
+				<div class="prof_msg"></div>
+				<button type="submit"><?=t::w('Save', 'Сақтау')?></button>
+			</form>
+		</div>
+	</div>
 
 	<!-- Құпиясөзді өзгерту -->
 	<div class="pop_bl pop_bl2 pass_ubd">

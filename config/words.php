@@ -2,6 +2,8 @@
 // Курьер (dlv) мен Раздача (dist) сөздері: кілт => [kz, ru, en, uz, ky]. t::w() алдымен site_word кестесін қарайды,
 // жоқ болса осы жерден алады. Базаға да осы сөздер жазылған (_drafts/site_word_dlv_*.sql). Жаңа мәтін: кодта t::w('English key', 'Қазақша') + осында бір жол.
 return [
+	'Edit' => ['kz' => 'Өзгерту', 'ru' => 'Изменить', 'en' => 'Edit', 'uz' => 'O‘zgartirish', 'ky' => 'Өзгөртүү'],
+	'Change photo' => ['kz' => 'Фотоны өзгерту', 'ru' => 'Сменить фото', 'en' => 'Change photo', 'uz' => 'Rasmni almashtirish', 'ky' => 'Сүрөттү алмаштыруу'],
 	'Today shift' => ['kz' => 'Бүгінгі смена', 'ru' => 'Смена сегодня', 'en' => 'On shift today', 'uz' => 'Bugungi smena', 'ky' => 'Бүгүнкү смена'],
 	'Shift open' => ['kz' => 'Смена ашық', 'ru' => 'Смена открыта', 'en' => 'Shift open', 'uz' => 'Smena ochiq', 'ky' => 'Смена ачык'],
 	'Nobody on shift yet' => ['kz' => 'Бүгін әзірге ешкім жоқ', 'ru' => 'Сегодня пока никого', 'en' => 'Nobody on shift yet', 'uz' => 'Bugun hozircha hech kim yo‘q', 'ky' => 'Бүгүн азырынча эч ким жок'],
