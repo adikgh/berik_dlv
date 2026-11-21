@@ -54,6 +54,27 @@
 
 			<div class="bp_box bp_list">
 				<div class="bp_box_h"><i class="far fa-user-friends"></i> <?=t::w('Staff', 'Жұмысшылар')?></div>
+				<? // Бүгінгі смена: бүгін касса сменасын ашқан, тапсырыс статусын өзгерткен немесе тапсырыс алған курьер
+					$c = (int)$company; $d0 = date('Y-m-d 00:00:00'); $d1 = date('Y-m-d 00:00:00', strtotime('-1 day'));
+					$sh_q = db::query("SELECT u.id, u.name, u.surname, MIN(x.t) t, MAX(x.op) op,
+							(SELECT s.positions_id FROM company_staff s WHERE s.user_id = u.id AND s.company_id = '$c' ORDER BY s.id LIMIT 1) pos
+						FROM (
+							SELECT user_id uid, ins_dt t, (close_dt IS NULL) op FROM retail_shifts WHERE company_id = '$c' AND (ins_dt >= '$d0' OR close_dt IS NULL)
+							UNION ALL SELECT l.user_id, l.ins_dt, 0 FROM retail_orders o JOIN retail_orders_log l ON l.order_id = o.id WHERE o.company_id = '$c' AND o.ins_dt >= '$d1' AND l.ins_dt >= '$d0'
+							UNION ALL SELECT `сourier_id`, ins_dt, 0 FROM retail_orders WHERE company_id = '$c' AND ins_dt >= '$d0' AND `сourier_id` > 0
+						) x JOIN user u ON u.id = x.uid GROUP BY u.id ORDER BY t");
+					$sh_pos = [];
+					$pq = db::query("SELECT id, name_kz, name_ru FROM company_staff_positions");
+					while ($pr = mysqli_fetch_assoc($pq)) $sh_pos[$pr['id']] = ($ui_lang == 'kz' ? $pr['name_kz'] : '') ?: $pr['name_ru']; ?>
+				<div class="bp_sub"><?=t::w('Today shift', 'Бүгінгі смена')?><? if (mysqli_num_rows($sh_q)): ?> <b><?=mysqli_num_rows($sh_q)?></b><? endif ?></div>
+				<? while ($sh = mysqli_fetch_assoc($sh_q)): $sh_n = trim($sh['name'].' '.$sh['surname']); ?>
+					<div class="bp_li bp_sh">
+						<span class="bp_li_ic"><?=htmlspecialchars(mb_strtoupper(mb_substr($sh_n, 0, 1)))?></span>
+						<span class="bp_li_t"><?=htmlspecialchars($sh_n)?><small><?=htmlspecialchars((string)@$sh_pos[$sh['pos']])?> · <?=date('H:i', strtotime($sh['t']))?></small></span>
+						<? if ($sh['op']): ?><span class="bp_sh_on" title="<?=t::h('Shift open', 'Смена ашық')?>"></span><? endif ?>
+					</div>
+				<? endwhile ?>
+				<? if (!mysqli_num_rows($sh_q)): ?><div class="bp_li bp_sh bp_sh_e"><span class="bp_li_t"><small><?=t::w('Nobody on shift yet', 'Бүгін әзірге ешкім жоқ')?></small></span></div><? endif ?>
 				<a class="bp_li" href="/users/">
 					<span class="bp_li_ic"><i class="far fa-users"></i></span>
 					<span class="bp_li_t"><?=t::w('Couriers', 'Курьерлер')?></span>
