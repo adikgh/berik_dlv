@@ -53,6 +53,15 @@
 			</div>
 
 			<div class="bp_box bp_list">
+				<div class="bp_box_h"><i class="far fa-user-friends"></i> <?=t::w('Staff', 'Жұмысшылар')?></div>
+				<a class="bp_li" href="/users/">
+					<span class="bp_li_ic"><i class="far fa-users"></i></span>
+					<span class="bp_li_t"><?=t::w('Couriers', 'Курьерлер')?></span>
+					<i class="far fa-chevron-right bp_li_ar"></i>
+				</a>
+			</div>
+
+			<div class="bp_box bp_list">
 				<? foreach ($pm_oth as $p): ?>
 					<a class="bp_li" href="<?=$p[1]?>">
 						<span class="bp_li_ic"><i class="far <?=$p[2]?>"></i></span>
@@ -60,11 +69,6 @@
 						<i class="far fa-chevron-right bp_li_ar"></i>
 					</a>
 				<? endforeach ?>
-				<a class="bp_li" href="/users/">
-					<span class="bp_li_ic"><i class="far fa-users"></i></span>
-					<span class="bp_li_t"><?=t::w('Couriers', 'Курьерлер')?></span>
-					<i class="far fa-chevron-right bp_li_ar"></i>
-				</a>
 				<div class="bp_li pass_ubd_btn">
 					<span class="bp_li_ic"><i class="far fa-key"></i></span>
 					<span class="bp_li_t"><?=t::w('Change password', 'Құпиясөзді өзгерту')?></span>
