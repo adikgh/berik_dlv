@@ -188,6 +188,7 @@ body{ background: var(--bp-bg); color: var(--bp-text); }
 .bp_lang_act{ background: var(--bp-green); color: #fff; }
 
 .bp_list{ padding: 6px 0; }
+.bp_list > .bp_box_h{ padding: 10px 16px 6px; }
 .bp_li{
 	display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 0 16px;
 	color: var(--bp-text); text-decoration: none; cursor: pointer;

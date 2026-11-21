@@ -37,19 +37,29 @@
 				</div>
 			</div>
 
+			<? // «Тағы»: тапсырыс бөлімдері бөлек блок, басқа бөлімдер (Оплата т.б.) аккаунт блогында
+				$pm_ord = []; $pm_oth = [];
+				foreach ($pm_more ?? [] as $p) { if ($p[1] == '/acc/') continue; if (strpos($p[1], '/orders/') === 0) $pm_ord[] = $p; else $pm_oth[] = $p; }
+				$pm_ord[] = [false, '/orders/?sort=none', 'fa-ban', t::w('Refusals', 'Бас тарту')]; ?>
 			<div class="bp_box bp_list">
-				<? foreach ($pm_more ?? [] as $p): if ($p[1] == '/acc/') continue; // мәзірдегі «Тағы» бөлімдері (block/menu.php) ?>
+				<div class="bp_box_h"><i class="far fa-receipt"></i> <?=t::w('Orders', 'Тапсырыстар')?></div>
+				<? foreach ($pm_ord as $p): ?>
 					<a class="bp_li" href="<?=$p[1]?>">
 						<span class="bp_li_ic"><i class="far <?=$p[2]?>"></i></span>
 						<span class="bp_li_t"><?=$p[3]?></span>
 						<i class="far fa-chevron-right bp_li_ar"></i>
 					</a>
 				<? endforeach ?>
-				<a class="bp_li" href="/orders/?sort=none">
-					<span class="bp_li_ic"><i class="far fa-ban"></i></span>
-					<span class="bp_li_t"><?=t::w('Refusals', 'Бас тарту')?></span>
-					<i class="far fa-chevron-right bp_li_ar"></i>
-				</a>
+			</div>
+
+			<div class="bp_box bp_list">
+				<? foreach ($pm_oth as $p): ?>
+					<a class="bp_li" href="<?=$p[1]?>">
+						<span class="bp_li_ic"><i class="far <?=$p[2]?>"></i></span>
+						<span class="bp_li_t"><?=$p[3]?></span>
+						<i class="far fa-chevron-right bp_li_ar"></i>
+					</a>
+				<? endforeach ?>
 				<a class="bp_li" href="/users/">
 					<span class="bp_li_ic"><i class="far fa-users"></i></span>
 					<span class="bp_li_t"><?=t::w('Couriers', 'Курьерлер')?></span>
